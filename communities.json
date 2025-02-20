@@ -17,4 +17,16 @@
     "latitude": 52.5200,
     "longitude": 13.4050
   }
+
+
+  {
+  "name": "ETHiopia",
+  "city": "Addis Ababa",
+  "country": "Ethiopia",
+  "website": "https://eth-iopia.xyz/",
+  "contact": "@ethiopia_community",
+  "latitude": 9.03,
+  "longitude": 38.74
+}
+
 ]
