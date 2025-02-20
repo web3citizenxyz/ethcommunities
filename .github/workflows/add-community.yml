@@ -1,0 +1,57 @@
+name: Process Community Submissions
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # This runs the Action every 5 minutes
+  workflow_dispatch:  # This allows you to trigger it manually
+
+jobs:
+  process-submissions:
+    runs-on: ubuntu-latest  # Runs on a fresh Ubuntu environment
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3  # This checks out your repo to the GitHub runner
+
+      - name: Get Issues with Submission Label
+        id: fetch_issues
+        run: |
+          issues=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                       -H "Accept: application/vnd.github.v3+json" \
+                       "https://api.github.com/repos/${{ github.repository }}/issues?labels=submission&state=open")
+
+          echo "$issues" > issues.json  # Save the issues to a file
+
+      - name: Convert Issues to JSON Entries
+        id: update_json
+        run: |
+          python3 <<EOF
+          import json
+
+          with open("issues.json") as f:
+              issues = json.load(f)
+
+          with open("communities.json", "r+") as f:
+              data = json.load(f)
+              for issue in issues:
+                  body_lines = issue["body"].split("\n")
+                  new_entry = {
+                      "name": body_lines[0].split(": ")[1],
+                      "website": body_lines[1].split(": ")[1],
+                      "twitter": body_lines[2].split(": ")[1],
+                      "contact": body_lines[3].split(": ")[1]
+                  }
+                  data.append(new_entry)
+
+              f.seek(0)
+              json.dump(data, f, indent=2)
+
+          EOF  # This script converts the issue to JSON and appends it to your file
+
+      - name: Commit Changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add communities.json
+          git commit -m "Add new community submissions"
+          git push  # Push the updated file back to your repository
