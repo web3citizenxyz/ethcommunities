@@ -6,6 +6,7 @@
     <title>Crypto Community Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <style>
         #map { height: 600px; width: 100%; }
     </style>
@@ -38,42 +39,71 @@
             return "Other";
         }
 
-        fetch('communities.json')
-            .then(response => response.json())
-            .then(data => {
-                let communitiesByContinent = {};
-                data.forEach(community => {
-                    L.marker([community.latitude, community.longitude])
-                        .addTo(map)
-                        .bindPopup(`<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact}`);
-                    
-                    let continent = getContinent(community.country);
-                    if (!communitiesByContinent[continent]) communitiesByContinent[continent] = {};
-                    if (!communitiesByContinent[continent][community.country]) communitiesByContinent[continent][community.country] = [];
-                    
-                    communitiesByContinent[continent][community.country].push(community);
+        function fetchCoordinates(city, country) {
+            return axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${city},${country}`)
+                .then(response => {
+                    if (response.data.length > 0) {
+                        return {
+                            latitude: parseFloat(response.data[0].lat),
+                            longitude: parseFloat(response.data[0].lon)
+                        };
+                    }
+                    return null;
+                })
+                .catch(error => {
+                    console.error(`Error fetching coordinates for ${city}, ${country}:`, error);
+                    return null;
                 });
-                
-                let communityList = document.getElementById("community-list");
-                for (const [continent, countries] of Object.entries(communitiesByContinent)) {
-                    let continentElement = document.createElement("h3");
-                    continentElement.textContent = continent;
-                    communityList.appendChild(continentElement);
-                    
-                    for (const [country, communities] of Object.entries(countries)) {
-                        let countryElement = document.createElement("h4");
-                        countryElement.textContent = country;
-                        communityList.appendChild(countryElement);
-                        
-                        communities.forEach(community => {
-                            let communityElement = document.createElement("p");
-                            communityElement.innerHTML = `<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact}`;
-                            communityList.appendChild(communityElement);
-                        });
+        }
+
+        async function loadCommunities() {
+            let response = await fetch('communities.json');
+            let data = await response.json();
+            let communitiesByContinent = {};
+            
+            for (let community of data) {
+                if (!community.latitude || !community.longitude) {
+                    let coords = await fetchCoordinates(community.city, community.country);
+                    if (coords) {
+                        community.latitude = coords.latitude;
+                        community.longitude = coords.longitude;
+                    } else {
+                        continue; // Skip if no coordinates found
                     }
                 }
-            })
-            .catch(error => console.error('Error loading community data:', error));
+                
+                L.marker([community.latitude, community.longitude])
+                    .addTo(map)
+                    .bindPopup(`<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact || 'N/A'}`);
+                
+                let continent = getContinent(community.country);
+                if (!communitiesByContinent[continent]) communitiesByContinent[continent] = {};
+                if (!communitiesByContinent[continent][community.country]) communitiesByContinent[continent][community.country] = [];
+                
+                communitiesByContinent[continent][community.country].push(community);
+            }
+            
+            let communityList = document.getElementById("community-list");
+            for (const [continent, countries] of Object.entries(communitiesByContinent)) {
+                let continentElement = document.createElement("h3");
+                continentElement.textContent = continent;
+                communityList.appendChild(continentElement);
+                
+                for (const [country, communities] of Object.entries(countries)) {
+                    let countryElement = document.createElement("h4");
+                    countryElement.textContent = country;
+                    communityList.appendChild(countryElement);
+                    
+                    communities.forEach(community => {
+                        let communityElement = document.createElement("p");
+                        communityElement.innerHTML = `<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact || 'N/A'}`;
+                        communityList.appendChild(communityElement);
+                    });
+                }
+            }
+        }
+
+        loadCommunities();
     </script>
 </body>
 </html>
