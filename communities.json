@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Crecimiento",
+    "city": "Buenos Aires",
+    "country": "Argentina",
+    "website": "https://bento.me/crecimientoar",
+    "Twitter/X": "@crecimientoar",
+    "latitude": -34.6037,
+    "longitude": -58.3816
+  },
+  {
+    "name": "Ethereum Berlin",
+    "city": "Berlin",
+    "country": "Germany",
+    "website": "https://ethberlin.com",
+    "contact": "@",
+    "latitude": 52.5200,
+    "longitude": 13.4050
+  }
+]
