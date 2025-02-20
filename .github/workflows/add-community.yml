@@ -16,37 +16,15 @@ jobs:
       - name: Get Issues with Submission Label
         id: fetch_issues
         run: |
-          issues=$(curl -H "Authorization: token ${{ secrets.ETHC}}" \
+          issues=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
                        -H "Accept: application/vnd.github.v3+json" \
                        "https://api.github.com/repos/${{ github.repository }}/issues?labels=submission&state=open")
 
           echo "$issues" > issues.json  # Save the issues to a file
 
-      - name: Convert Issues to JSON Entries
-        id: update_json
+      - name: Run Python Script to Process Submissions
         run: |
-          python3 <<EOF
-          import json
-
-          with open("issues.json") as f:
-              issues = json.load(f)
-
-          with open("communities.json", "r+") as f:
-              data = json.load(f)
-              for issue in issues:
-                  body_lines = issue["body"].split("\n")
-                  new_entry = {
-                      "name": body_lines[0].split(": ")[1],
-                      "website": body_lines[1].split(": ")[1],
-                      "twitter": body_lines[2].split(": ")[1],
-                      "contact": body_lines[3].split(": ")[1]
-                  }
-                  data.append(new_entry)
-
-              f.seek(0)
-              json.dump(data, f, indent=2)
-
-          EOF  # This script converts the issue to JSON and appends it to your file
+          python3 process_submissions.py  # Run the Python script we created
 
       - name: Commit Changes
         run: |
@@ -54,4 +32,4 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add communities.json
           git commit -m "Add new community submissions"
-          git push  # Push the updated file back to your repository
+          git push  # Push the updated file back to your GitHub repo
