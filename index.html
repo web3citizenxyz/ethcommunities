@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Community Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <style>
+        #map { height: 600px; width: 100%; }
+    </style>
+</head>
+<body>
+    <h1>Crypto Communities Around the World</h1>
+    <p>Submit your community via a <a href="https://github.com/YOUR_GITHUB_USERNAME/crypto-community-map">GitHub Pull Request</a>.</p>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([20, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        fetch('communities.json')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(community => {
+                    L.marker([community.latitude, community.longitude])
+                        .addTo(map)
+                        .bindPopup(`<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact}`);
+                });
+            })
+            .catch(error => console.error('Error loading community data:', error));
+    </script>
+</body>
+</html>
