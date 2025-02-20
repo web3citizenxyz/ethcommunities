@@ -2,16 +2,16 @@ name: Process Community Submissions
 
 on:
   schedule:
-    - cron: '*/5 * * * *'  # This runs the Action every 5 minutes
-  workflow_dispatch:  # This allows you to trigger it manually
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
+  workflow_dispatch:  # Allows you to manually trigger the workflow
 
 jobs:
   process-submissions:
-    runs-on: ubuntu-latest  # Runs on a fresh Ubuntu environment
+    runs-on: ubuntu-latest  # Run on a fresh Ubuntu environment
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3  # This checks out your repo to the GitHub runner
+        uses: actions/checkout@v3  # Checkout your repository to the GitHub runner
 
       - name: Get Issues with Submission Label
         id: fetch_issues
@@ -20,16 +20,21 @@ jobs:
                        -H "Accept: application/vnd.github.v3+json" \
                        "https://api.github.com/repos/${{ github.repository }}/issues?labels=submission&state=open")
 
-          echo "$issues" > issues.json  # Save the issues to a file
+          echo "$issues" > issues.json  # Save the fetched issues to a new issues.json file
 
       - name: Run Python Script to Process Submissions
         run: |
-          python3 process_submissions.py  # Run the Python script we created
+          python3 process_submissions.py  # Run your Python script to process and update communities.json
+
+      - name: Add Issues and Updated JSON to Git
+        run: |
+          git add issues.json  # Add the new issues.json file to Git
+          git add communities.json  # Ensure the communities.json file is also added, if not already tracked
 
       - name: Commit Changes
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add communities.json
-          git commit -m "Add new community submissions"
-          git push  # Push the updated file back to your GitHub repo
+          git config --global user.name "github-actions[bot]"  # Set user name for GitHub Actions bot
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"  # Set user email for GitHub Actions bot
+          git commit -m "Add new community submissions"  # Commit the changes with a message
+          git push  # Push the changes back to your GitHub repository
+
