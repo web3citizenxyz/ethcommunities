@@ -4,20 +4,20 @@
     "city": "Buenos Aires",
     "country": "Argentina",
     "website": "https://bento.me/crecimientoar",
-    "twitter": "@crecimientoar",
+    "twitter": "@crecimientoar"
   },
   {
     "name": "Ethereum Berlin",
     "city": "Berlin",
     "country": "Germany",
     "website": "https://ethberlin.com",
-    "contact": "@",
+    "contact": "@"
   },
   {
     "name": "ETHiopia",
     "city": "Addis Ababa",
     "country": "Ethiopia",
     "website": "https://eth-iopia.xyz/",
-    "contact": "@ethiopia_community",
+    "contact": "@ethiopia_community"
   }
 ]
