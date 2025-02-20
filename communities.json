@@ -19,5 +19,17 @@
     "country": "Ethiopia",
     "website": "https://eth-iopia.xyz/",
     "contact": "@ethiopia_community"
+  },
+  {
+    "name": "Example Community",
+    "website": "http://example.com",
+    "twitter": "@example",
+    "contact": "email@example.com"
+  },
+  {
+    "name": "Another Community",
+    "website": "http://another.com",
+    "twitter": "@another",
+    "contact": "email@another.com"
   }
 ]
