@@ -12,23 +12,66 @@
 </head>
 <body>
     <h1>Crypto Communities Around the World</h1>
-    <p>Submit your community via a <a href="https://github.com/YOUR_GITHUB_USERNAME/crypto-community-map">GitHub Pull Request</a>.</p>
+    <p>Submit your community via a <a href="https://github.com/YOUR_GITHUB_REPO">GitHub Pull Request</a>.</p>
     <div id="map"></div>
-
+    <h2>Communities</h2>
+    <div id="community-list"></div>
+    
     <script>
         var map = L.map('map').setView([20, 0], 2);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(map);
 
+        function getContinent(country) {
+            const continents = {
+                "North America": ["USA", "Canada", "Mexico"],
+                "South America": ["Argentina", "Brazil", "Chile"],
+                "Europe": ["Germany", "France", "UK", "Spain", "Italy"],
+                "Africa": ["Ethiopia", "Nigeria", "South Africa", "Kenya"],
+                "Asia": ["China", "Japan", "India", "Singapore"],
+                "Oceania": ["Australia", "New Zealand"]
+            };
+            for (const [continent, countries] of Object.entries(continents)) {
+                if (countries.includes(country)) return continent;
+            }
+            return "Other";
+        }
+
         fetch('communities.json')
             .then(response => response.json())
             .then(data => {
+                let communitiesByContinent = {};
                 data.forEach(community => {
                     L.marker([community.latitude, community.longitude])
                         .addTo(map)
                         .bindPopup(`<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact}`);
+                    
+                    let continent = getContinent(community.country);
+                    if (!communitiesByContinent[continent]) communitiesByContinent[continent] = {};
+                    if (!communitiesByContinent[continent][community.country]) communitiesByContinent[continent][community.country] = [];
+                    
+                    communitiesByContinent[continent][community.country].push(community);
                 });
+                
+                let communityList = document.getElementById("community-list");
+                for (const [continent, countries] of Object.entries(communitiesByContinent)) {
+                    let continentElement = document.createElement("h3");
+                    continentElement.textContent = continent;
+                    communityList.appendChild(continentElement);
+                    
+                    for (const [country, communities] of Object.entries(countries)) {
+                        let countryElement = document.createElement("h4");
+                        countryElement.textContent = country;
+                        communityList.appendChild(countryElement);
+                        
+                        communities.forEach(community => {
+                            let communityElement = document.createElement("p");
+                            communityElement.innerHTML = `<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact}`;
+                            communityList.appendChild(communityElement);
+                        });
+                    }
+                }
             })
             .catch(error => console.error('Error loading community data:', error));
     </script>
