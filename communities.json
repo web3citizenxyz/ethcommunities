@@ -5,8 +5,6 @@
     "country": "Argentina",
     "website": "https://bento.me/crecimientoar",
     "twitter": "@crecimientoar",
-    "latitude": -34.6037,
-    "longitude": -58.3816
   },
   {
     "name": "Ethereum Berlin",
@@ -14,8 +12,6 @@
     "country": "Germany",
     "website": "https://ethberlin.com",
     "contact": "@",
-    "latitude": 52.5200,
-    "longitude": 13.4050
   },
   {
     "name": "ETHiopia",
@@ -23,7 +19,5 @@
     "country": "Ethiopia",
     "website": "https://eth-iopia.xyz/",
     "contact": "@ethiopia_community",
-    "latitude": 9.03,
-    "longitude": 38.74
   }
 ]
