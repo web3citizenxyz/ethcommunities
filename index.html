@@ -14,7 +14,37 @@
 <body>
     <h1>Ethereum Communities Around the World</h1>
     <p>Submit your community on <a href="https://github.com/eugeniatel/ethcommunity">our repo</a>.</p>
+
+    <!-- Submit Community Form Section -->
+    <h2>Submit Your Community</h2>
+    <form id="communityForm">
+        <label for="name">Community Name:</label>
+        <input type="text" id="name" required>
+
+        <label for="website">Website:</label>
+        <input type="url" id="website" required>
+
+        <label for="twitter">Twitter/X:</label>
+        <input type="text" id="twitter">
+
+        <label for="contact">Contact Info:</label>
+        <input type="text" id="contact" required>
+
+        <label for="city">City:</label>
+        <input type="text" id="city">
+
+        <label for="country">Country:</label>
+        <input type="text" id="country">
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <p id="responseMessage"></p>
+    <!-- End Submit Community Form Section -->
+
+    <!-- Leaflet Map -->
     <div id="map"></div>
+
     <h2>Communities</h2>
     <div id="community-list"></div>
     
