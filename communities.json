@@ -1,35 +1,266 @@
 [
   {
-    "name": "Crecimiento",
-    "city": "Buenos Aires",
-    "country": "Argentina",
-    "website": "https://bento.me/crecimientoar",
-    "twitter": "@crecimientoar"
-  },
-  {
-    "name": "Ethereum Berlin",
-    "city": "Berlin",
-    "country": "Germany",
-    "website": "https://ethberlin.com",
-    "contact": "@"
-  },
-  {
     "name": "ETHiopia",
-    "city": "Addis Ababa",
-    "country": "Ethiopia",
     "website": "https://eth-iopia.xyz/",
-    "contact": "@ethiopia_community"
+    "country": "Ethiopia"
   },
   {
-    "name": "Example Community",
-    "website": "http://example.com",
-    "twitter": "@example",
-    "contact": "email@example.com"
+    "name": "Blockfuse Labs",
+    "website": "https://blockfuselabs.com",
+    "contact": "blockfuselabs@gmail.com",
+    "city": "Jos",
+    "country": "Nigeria"
   },
   {
-    "name": "Another Community",
-    "website": "http://another.com",
-    "twitter": "@another",
-    "contact": "email@another.com"
+    "name": "Blockheader Web3",
+    "website": "https://x.com/blockheaderweb3",
+    "city": "Kaduna",
+    "country": "Nigeria"
+  },
+  {
+    "name": "ETH Abuja",
+    "website": "https://ethabuja.com",
+    "contact": "ethabuja@gmail.com",
+    "country": "Nigeria"
+  },
+  {
+    "name": "ETH Enugu",
+    "twitter": "https://x.com/Eth_Enugu",
+    "country": "Nigeria"
+  },
+  {
+    "name": "ETH Jos",
+    "website": "https://x.com/ethjos_",
+    "contact": "ethjosbuilderscommunity@gmail.com",
+    "country": "Nigeria"
+  },
+  {
+    "name": "ETHNigeria",
+    "twitter": "https://x.com/ethereumnigeria",
+    "country": "Nigeria"
+  },
+  {
+    "name": "Web 3 Bridge Africa",
+    "website": "https://www.web3bridgeafrica.com",
+    "contact": "support@web3bridge.com",
+    "city": "Lagos",
+    "country": "Nigeria"
+  },
+  {
+    "name": "Web3Ladies",
+    "website": "https://x.com/web3ladies",
+    "city": "Lagos",
+    "country": "Nigeria"
+  },
+  {
+    "name": "Crecimiento",
+    "website": "https://bento.me/crecimientoar",
+    "country": "Argentina"
+  },
+  {
+    "name": "Ethereum Argentina",
+    "website": "https://ethereumargentina.org/",
+    "country": "Argentina"
+  },
+  {
+    "name": "Ethereum Bolivia",
+    "website": "https://t.co/UxNHXuwv8H",
+    "country": "Bolivia"
+  },
+  {
+    "name": "Modular Crypto",
+    "website": "https://www.modularcrypto.xyz/",
+    "country": "Brazil"
+  },
+  {
+    "name": "ETH Toronto",
+    "website": "https://www.ethtoronto.ca/",
+    "country": "Canada"
+  },
+  {
+    "name": "ETH Salvador",
+    "website": "https://ethsalvador.org/",
+    "country": "El Salvador"
+  },
+  {
+    "name": "Ethereum Honduras",
+    "website": "https://linktr.ee/ethereumhn",
+    "country": "Honduras"
+  },
+  {
+    "name": "Ethereum Mexico",
+    "website": "https://ethmexico.org/",
+    "country": "Mexico"
+  },
+  {
+    "name": "Monterrey",
+    "twitter": "https://x.com/eth_mty",
+    "country": "Mexico"
+  },
+  {
+    "name": "ETH Lima",
+    "website": "https://ethlima.org/",
+    "country": "Peru"
+  },
+  {
+    "name": "Ethereum Uruguay",
+    "website": "https://www.ethereumuruguay.org/",
+    "country": "Uruguay"
+  },
+  {
+    "name": "Boston Blockchain Week",
+    "website": "https://bostonblockchainweek.com/",
+    "country": "USA"
+  },
+  {
+    "name": "ETHDenver",
+    "website": "https://www.ethdenver.com/",
+    "country": "USA"
+  },
+  {
+    "name": "ETH Ensenada",
+    "twitter": "https://x.com/ETH_Ensenada",
+    "country": "USA"
+  },
+  {
+    "name": "ETH Miami",
+    "website": "https://ethmiami.net/",
+    "country": "USA"
+  },
+  {
+    "name": "ETH San Francisco",
+    "website": "https://www.ethereumsf.org/",
+    "country": "USA"
+  },
+  {
+    "name": "NFT NYC",
+    "website": "https://www.nft.nyc/",
+    "country": "USA"
+  },
+  {
+    "name": "LATAM",
+    "twitter": "https://x.com/CriptoCuriosas",
+    "country": "Latin America"
+  },
+  {
+    "name": "LATAM",
+    "twitter": "https://x.com/herdaolatam",
+    "country": "Latin America"
+  },
+  {
+    "name": "LATAM",
+    "twitter": "https://x.com/EspacioCripto",
+    "country": "Latin America"
+  },
+  {
+    "name": "ETH Shanghai",
+    "website": "https://ethshanghai.org/",
+    "country": "China"
+  },
+  {
+    "name": "ETH Tokio",
+    "website": "https://ethtokyo.org/",
+    "country": "Japan"
+  },
+  {
+    "name": "ETHTaipei",
+    "website": "https://ethtaipei.org/",
+    "country": "Taiwan"
+  },
+  {
+    "name": "ETH Sofia",
+    "website": "https://www.ethsofia.com/",
+    "country": "Bulgaria"
+  },
+  {
+    "name": "ETH Lisbon",
+    "website": "https://ethlisbon.org/",
+    "country": "Czech Republic"
+  },
+  {
+    "name": "Oxford Blockchain Society",
+    "website": "https://www.oxfordblockchain.xyz/",
+    "country": "England"
+  },
+  {
+    "name": "ETH Tallin",
+    "website": "https://x.com/eth_tallinn",
+    "country": "Estonia"
+  },
+  {
+    "name": "ETH Dublin",
+    "website": "https://www.ethdublin.io/",
+    "country": "Ireland"
+  },
+  {
+    "name": "ETH Milan",
+    "website": "https://www.ethmilan.xyz/",
+    "country": "Italy"
+  },
+  {
+    "name": "ETH Naples",
+    "website": "https://linktr.ee/napuleth",
+    "country": "Italy"
+  },
+  {
+    "name": "ETHRome",
+    "website": "https://www.ethrome.org/",
+    "country": "Italy"
+  },
+  {
+    "name": "ETH Venice",
+    "website": "https://ethvenice.com/",
+    "country": "Italy"
+  },
+  {
+    "name": "ETHDam",
+    "website": "https://www.ethdam.com/",
+    "country": "Netherlands"
+  },
+  {
+    "name": "ETH Warsaw",
+    "website": "https://www.ethwarsaw.dev/",
+    "country": "Poland"
+  },
+  {
+    "name": "ETH Bucharest",
+    "website": "https://linktr.ee/ethbucharest",
+    "country": "Romania"
+  },
+  {
+    "name": "ETH Cluj",
+    "website": "https://www.ethcluj.org/",
+    "country": "Romania"
+  },
+  {
+    "name": "NFT Bucharest",
+    "website": "https://nftbucharest.xyz/",
+    "country": "Romania"
+  },
+  {
+    "name": "ETH Belgrade",
+    "website": "https://ethbelgrade.rs/",
+    "country": "Serbia"
+  },
+  {
+    "name": "Belgrade Blockchain Week",
+    "website": "https://belgradeblockchainweek.com/",
+    "country": "Serbia"
+  },
+  {
+    "name": "ETH Istanbul",
+    "website": "https://x.com/ETHIstanbul",
+    "country": "Turkey"
+  },
+  {
+    "name": "ETH Riyadh",
+    "website": "https://ethriyadh.com/",
+    "contact": "ethriyadh2024@gmail.com",
+    "country": "Saudi Arabia"
+  },
+  {
+    "name": "ETHDubai",
+    "website": "https://www.ethdubaiconf.org/",
+    "country": "UAE"
   }
 ]
