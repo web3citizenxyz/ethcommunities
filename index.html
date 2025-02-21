@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
     <title>Crypto Community Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -134,6 +135,13 @@
         }
 
         loadCommunities();
+
+        fetch('communities.json')
+            .then(response => response.json())
+            .then(data => {
+                // Verificar que los datos se cargan
+                console.log(data);
+            });
     </script>
 </body>
 </html>
