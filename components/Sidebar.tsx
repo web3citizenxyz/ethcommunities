@@ -22,23 +22,23 @@ export default function Sidebar({
   onCommunitySelect
 }: SidebarProps) {
   return (
-    <div className="w-64 bg-white border-r">
-      <div className="p-3 border-b flex items-center">
-        <Globe className="w-4 h-4 mr-2" />
-        <span className="font-medium">ETH Communities</span>
+    <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
+      <div className="p-3 border-b border-gray-200 flex items-center bg-white">
+        <Globe className="w-4 h-4 mr-2 text-gray-600" />
+        <span className="font-medium text-gray-900">ETH Communities</span>
       </div>
 
-      <div className="overflow-y-auto h-[calc(100vh-48px)]">
+      <div className="overflow-y-auto flex-1">
         {REGIONS.map((region) => {
           const regionData = communityGroups[region]
           const hasData = regionData && Object.keys(regionData.countries).length > 0
 
           return (
-            <div key={region}>
+            <div key={region} className="border-b border-gray-100 last:border-0">
               <button
-                className={`w-full text-left px-4 py-1.5 hover:bg-gray-50 ${
-                  selectedRegion === region ? 'bg-gray-50' : ''
-                } ${!hasData ? 'opacity-50 cursor-not-allowed' : ''}`}
+                className={`w-full text-left px-4 py-2 transition-colors duration-150
+                  ${selectedRegion === region ? 'bg-gray-50 text-gray-900' : 'text-gray-600'}
+                  ${!hasData ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'}`}
                 onClick={() => onRegionSelect(region)}
                 disabled={!hasData}
               >
@@ -46,28 +46,30 @@ export default function Sidebar({
               </button>
 
               {selectedRegion === region && hasData && (
-                <div>
+                <div className="bg-gray-50 pb-1">
                   {Object.entries(regionData.countries).map(([country, communities]) => (
                     <div key={country}>
                       <button
-                        className={`w-full text-left pl-8 pr-4 py-1 hover:bg-gray-50 ${
-                          selectedCountry === country ? 'bg-gray-50' : ''
-                        }`}
+                        className={`w-full text-left pl-8 pr-4 py-1.5 transition-colors duration-150
+                          ${selectedCountry === country ? 'bg-gray-100' : 'hover:bg-gray-100'}`}
                         onClick={() => onCountrySelect(country)}
                       >
                         <div className="flex items-center justify-between text-sm">
-                          <span>{country}</span>
-                          <span className="text-xs text-gray-400">({communities.length})</span>
+                          <span className="text-gray-700">{country}</span>
+                          <span className="text-xs text-gray-400 bg-white px-1.5 py-0.5 rounded">
+                            {communities.length}
+                          </span>
                         </div>
                       </button>
 
                       {selectedCountry === country && (
-                        <div>
+                        <div className="bg-gray-100">
                           {communities.map((community) => (
                             <button
                               key={community.name}
                               onClick={() => onCommunitySelect(community)}
-                              className="w-full text-left pl-12 pr-4 py-1 hover:bg-gray-50 text-sm text-gray-500"
+                              className="w-full text-left pl-12 pr-4 py-1.5 text-sm text-gray-600
+                                hover:bg-gray-200 transition-colors duration-150"
                             >
                               {community.name}
                             </button>
