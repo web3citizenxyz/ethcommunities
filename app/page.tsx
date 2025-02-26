@@ -1,132 +1,98 @@
 "use client"
 
-import { useState } from "react"
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet"
-import "leaflet/dist/leaflet.css"
-import L from "leaflet"
-import { Globe, List, Plus, Sun } from "lucide-react"
+import { useState, useEffect } from "react"
+import dynamic from 'next/dynamic'
+import { Globe, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import Sidebar from "@/components/Sidebar"
+import { REGION_MAPPING } from "../utils/regionMapping"
+import { Community } from "@/types"
+import SearchHeader from '@/components/SearchHeader'
 
-// Fix for default marker icons in Leaflet with Next.js
-const icon = L.icon({
-  iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41],
+// Importar el mapa de forma dinámica para evitar errores de SSR
+const DynamicMap = dynamic(() => import('../components/map'), { 
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center h-full">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+    </div>
+  )
 })
 
-L.Marker.prototype.options.icon = icon
-
-interface Community {
-  name: string
-  country: string
-  count: number
-}
-
-const communities: Record<string, Community[]> = {
-  "South America": [
-    { name: "Argentina", country: "Argentina", count: 2 },
-    { name: "Brazil", country: "Brazil", count: 2 },
-  ],
-  "North America": [
-    { name: "USA", country: "USA", count: 2 },
-    { name: "Canada", country: "Canada", count: 2 },
-  ],
-}
-
 export default function Home() {
-  const [showMap, setShowMap] = useState(true)
+  const [communities, setCommunities] = useState<Community[]>([])
+  const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
+  const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
+  const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
+
+  useEffect(() => {
+    const loadCommunities = async () => {
+      try {
+        const response = await fetch('/data/communities.json')
+        const data = await response.json()
+        setCommunities(data)
+      } catch (error) {
+        console.error('Error loading communities:', error)
+      }
+    }
+    loadCommunities()
+  }, [])
+
+  // Organizar comunidades por región y país
+  const communityGroups = communities.reduce((acc, community) => {
+    const region = REGION_MAPPING[community.country] || 'Other'
+    
+    if (!acc[region]) {
+      acc[region] = { countries: {} }
+    }
+    
+    if (!acc[region].countries[community.country]) {
+      acc[region].countries[community.country] = []
+    }
+    
+    acc[region].countries[community.country].push(community)
+    return acc
+  }, {} as Record<string, { countries: Record<string, Community[]> }>)
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query)
+    // Aquí implementaremos la lógica de búsqueda
+  }
 
   return (
-    <div className="flex h-screen">
-      {/* Sidebar */}
-      <div className="w-64 border-r bg-background">
-        <div className="flex items-center gap-2 p-4 border-b">
-          <Globe className="w-5 h-5" />
-          <h1 className="font-semibold">Communities</h1>
-        </div>
-        <ScrollArea className="h-[calc(100vh-57px)]">
-          <div className="p-4">
-            {Object.entries(communities).map(([region, communities]) => (
-              <div key={region} className="mb-6">
-                <h2 className="text-sm font-semibold text-muted-foreground mb-2">{region}</h2>
-                {communities.map((community) => (
-                  <div
-                    key={community.name}
-                    className="flex items-center justify-between py-2 px-2 hover:bg-accent rounded-md cursor-pointer"
-                  >
-                    <div className="flex items-center gap-2">
-                      <Globe className="w-4 h-4 text-muted-foreground" />
-                      <span>{community.name}</span>
-                    </div>
-                    <span className="text-sm text-muted-foreground">{community.count}</span>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
-      </div>
-
-      {/* Main Content */}
+    <div className="h-screen flex bg-white">
+      <Sidebar
+        communityGroups={communityGroups}
+        selectedRegion={selectedRegion}
+        selectedCountry={selectedCountry}
+        onRegionSelect={(region) => {
+          setSelectedRegion(region)
+          setSelectedCountry(null)
+          setSelectedCommunity(null)
+        }}
+        onCountrySelect={(country) => {
+          setSelectedCountry(country)
+          setSelectedCommunity(null)
+        }}
+        onCommunitySelect={(community) => {
+          setSelectedCountry(community.country)
+          setSelectedCommunity(community)
+        }}
+      />
+      
       <div className="flex-1 flex flex-col">
-        <header className="border-b bg-background">
-          <div className="flex items-center justify-between p-4">
-            <h1 className="text-xl font-semibold">Ethereum Communities</h1>
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm" onClick={() => setShowMap(!showMap)}>
-                {showMap ? <List className="h-4 w-4" /> : <Globe className="h-4 w-4" />}
-                {showMap ? "List View" : "Map View"}
-              </Button>
-              <Button size="sm">
-                <Plus className="h-4 w-4 mr-2" />
-                Add Community
-              </Button>
-              <Button variant="ghost" size="icon">
-                <Sun className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </header>
-
-        <main className="flex-1 p-4">
-          {showMap ? (
-            <div className="h-full w-full rounded-lg overflow-hidden border">
-              <MapContainer center={[20, 0]} zoom={2} style={{ height: "100%", width: "100%" }} zoomControl={false}>
-                <TileLayer
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                />
-                <Marker position={[51.505, -0.09]}>
-                  <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
-                  </Popup>
-                </Marker>
-              </MapContainer>
-            </div>
-          ) : (
-            <div className="grid gap-4">
-              {Object.entries(communities).map(([region, communities]) => (
-                <div key={region}>
-                  <h2 className="text-lg font-semibold mb-2">{region}</h2>
-                  <div className="grid gap-2">
-                    {communities.map((community) => (
-                      <div key={community.name} className="p-4 border rounded-lg hover:bg-accent">
-                        <div className="flex items-center justify-between">
-                          <h3 className="font-medium">{community.name}</h3>
-                          <span className="text-sm text-muted-foreground">{community.count} communities</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        <SearchHeader 
+          searchQuery={searchQuery}
+          onSearchChange={handleSearch}
+        />
+        <main className="flex-1">
+          <DynamicMap
+            communities={communities}
+            selectedRegion={selectedRegion}
+            selectedCountry={selectedCountry}
+            selectedCommunity={selectedCommunity}
+          />
         </main>
       </div>
     </div>

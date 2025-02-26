@@ -2,71 +2,260 @@
 
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { COUNTRY_COORDINATES } from '@/utils/geocoding'
 import 'leaflet/dist/leaflet.css'
-
-// Configuración del icono por defecto
-delete (L.Icon.Default.prototype as any)._getIconUrl
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: '/images/marker-icon-2x.png',
-  iconUrl: '/images/marker-icon.png',
-  shadowUrl: '/images/marker-shadow.png',
-})
+import dynamic from 'next/dynamic'
 
 interface Community {
   name: string
   website?: string
   twitter?: string
-  contact?: string
-  city?: string
   country: string
+  city?: string
 }
 
-export default function Map({ communities = [] }: { communities: Community[] }) {
-  const mapRef = useRef<L.Map | null>(null)
+interface MapProps {
+  communities: Community[]
+  selectedRegion: string | null
+  selectedCountry: string | null
+  selectedCommunity: Community | null
+}
+
+// Componente para manejar los cambios de vista
+function MapController({ 
+  selectedCountry, 
+  selectedRegion,
+  selectedCommunity,
+  communities 
+}: { 
+  selectedCountry: string | null
+  selectedRegion: string | null
+  selectedCommunity: Community | null
+  communities: Community[]
+}) {
+  const map = useMap()
+  const lastCountryRef = useRef<string | null>(null)
+  const manualZoomRef = useRef<boolean>(false)
+  const initialZoomDoneRef = useRef<boolean>(false)
+
+  // Detectar zoom manual
+  useEffect(() => {
+    const handleZoom = () => {
+      if (initialZoomDoneRef.current) {
+        manualZoomRef.current = true;
+      }
+    };
+
+    map.on('zoomend', handleZoom);
+    return () => {
+      map.off('zoomend', handleZoom);
+    };
+  }, [map]);
 
   useEffect(() => {
-    // Inicializar el mapa solo si no existe
-    if (!mapRef.current) {
-      const map = L.map('map').setView([20, 0], 2)
-      
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-      }).addTo(map)
+    const handleNavigation = () => {
+      if (selectedCommunity) {
+        const coordinates = COUNTRY_COORDINATES[selectedCommunity.country]
+        if (coordinates) {
+          const isAlreadyInCountry = selectedCommunity.country === lastCountryRef.current
+          
+          if (!isAlreadyInCountry || !initialZoomDoneRef.current) {
+            map.flyTo(coordinates, 6)
+            initialZoomDoneRef.current = true
+            manualZoomRef.current = false
+          } else {
+            // Si ya estamos en el país, solo centramos en la comunidad
+            const countryCommunities = communities.filter(c => c.country === selectedCommunity.country)
+            const index = countryCommunities.findIndex(c => c.name === selectedCommunity.name)
+            
+            if (countryCommunities.length > 1 && index !== -1) {
+              const offset = 0.5
+              const adjustedCoordinates: [number, number] = [
+                coordinates[0] + (index * offset * (Math.random() > 0.5 ? 1 : -1)),
+                coordinates[1] + (index * offset * (Math.random() > 0.5 ? 1 : -1))
+              ]
+              map.panTo(adjustedCoordinates)
+            } else {
+              map.panTo(coordinates)
+            }
+          }
+          lastCountryRef.current = selectedCommunity.country
+        }
+      } else if (selectedCountry) {
+        const coordinates = COUNTRY_COORDINATES[selectedCountry]
+        if (coordinates) {
+          if (!initialZoomDoneRef.current || lastCountryRef.current !== selectedCountry) {
+            map.flyTo(coordinates, 6)
+            initialZoomDoneRef.current = true
+            manualZoomRef.current = false
+          }
+          lastCountryRef.current = selectedCountry
+        }
+      } else if (selectedRegion) {
+        const regionView = {
+          'North America': { center: [39.8283, -98.5795] as [number, number], zoom: 4 },
+          'South America': { center: [-15.7801, -47.9292] as [number, number], zoom: 4 },
+          'Europe': { center: [48.8566, 2.3522] as [number, number], zoom: 4 },
+          'Asia': { center: [34.0479, 100.6197] as [number, number], zoom: 3 },
+          'Africa': { center: [9.1450, 18.4277] as [number, number], zoom: 3 },
+          'Oceania': { center: [-25.2744, 133.7751] as [number, number], zoom: 4 }
+        }[selectedRegion]
 
-      // Solo un marcador en [0,0] para prueba
-      communities.forEach(community => {
-        L.marker([0, 0])
-          .bindPopup(`
-            <div class="popup-content">
-              <h3 class="font-bold">${community.name}</h3>
-              <p>${community.city ? `${community.city}, ` : ''}${community.country}</p>
-              ${community.website ? `<a href="${community.website}" target="_blank" class="text-blue-500 hover:underline">Website</a>` : ''}
-              ${community.twitter ? `<br/><a href="${community.twitter}" target="_blank" class="text-blue-500 hover:underline">Twitter</a>` : ''}
-            </div>
-          `)
-          .addTo(map)
-      })
-
-      mapRef.current = map
-    }
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove()
-        mapRef.current = null
+        if (regionView) {
+          map.flyTo(regionView.center, regionView.zoom)
+          initialZoomDoneRef.current = false
+          lastCountryRef.current = null
+        }
       }
     }
-  }, [communities])
+
+    handleNavigation()
+  }, [map, selectedCountry, selectedRegion, selectedCommunity, communities])
+
+  return null
+}
+
+function CommunityMarkers({ 
+  communities,
+  selectedCountry,
+  selectedCommunity 
+}: { 
+  communities: Community[]
+  selectedCountry: string | null
+  selectedCommunity: Community | null
+}) {
+  const map = useMap()
+  const markerRefs = useRef<Record<string, L.Marker>>({})
+
+  // Filtrar comunidades si hay un país seleccionado
+  const filteredCommunities = selectedCountry 
+    ? communities.filter(c => c.country === selectedCountry)
+    : communities
+
+  const communitiesByCountry = filteredCommunities.reduce((acc, community) => {
+    if (!acc[community.country]) {
+      acc[community.country] = []
+    }
+    acc[community.country].push(community)
+    return acc
+  }, {} as Record<string, Community[]>)
+
+  // Efecto para abrir el popup de la comunidad seleccionada
+  useEffect(() => {
+    if (selectedCommunity) {
+      const markerId = `${selectedCommunity.name}-${selectedCommunity.country}`
+      const marker = markerRefs.current[markerId]
+      if (marker) {
+        marker.openPopup()
+      }
+    }
+  }, [selectedCommunity])
 
   return (
-    <div 
-      id="map" 
-      style={{ 
-        height: '600px',
-        width: '100%',
-        borderRadius: '8px',
-        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-      }} 
-    />
+    <>
+      {Object.entries(communitiesByCountry).map(([country, communities]) => {
+        const coordinates = COUNTRY_COORDINATES[country]
+        if (!coordinates) {
+          console.warn(`No coordinates found for country: ${country}`)
+          return null
+        }
+
+        return communities.map((community, index) => {
+          const offset = 0.5
+          const adjustedCoordinates: [number, number] = communities.length > 1 
+            ? [
+                coordinates[0] + (index * offset * (Math.random() > 0.5 ? 1 : -1)),
+                coordinates[1] + (index * offset * (Math.random() > 0.5 ? 1 : -1))
+              ]
+            : coordinates
+
+          const markerId = `${community.name}-${community.country}`
+
+          return (
+            <Marker 
+              key={markerId}
+              position={adjustedCoordinates}
+              ref={(ref) => {
+                if (ref) {
+                  markerRefs.current[markerId] = ref
+                }
+              }}
+            >
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-bold">{community.name}</h3>
+                  <p className="text-sm text-gray-600">
+                    {community.city ? `${community.city}, ` : ''}{community.country}
+                  </p>
+                  <div className="mt-2 space-y-1">
+                    {community.website && (
+                      <a
+                        href={community.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline text-sm block"
+                      >
+                        Website
+                      </a>
+                    )}
+                    {community.twitter && (
+                      <a
+                        href={community.twitter}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-500 hover:underline text-sm block"
+                      >
+                        Twitter
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </Popup>
+            </Marker>
+          )
+        })
+      })}
+    </>
   )
-} 
+}
+
+const MapComponent = ({ communities, selectedRegion, selectedCountry, selectedCommunity }: MapProps) => {
+  useEffect(() => {
+    delete (L.Icon.Default.prototype as any)._getIconUrl
+    L.Icon.Default.mergeOptions({
+      iconUrl: '/images/marker-icon.png',
+      iconRetinaUrl: '/images/marker-icon-2x.png',
+      shadowUrl: '/images/marker-shadow.png',
+    })
+  }, [])
+
+  return (
+    <div className="h-full w-full">
+      <MapContainer
+        center={[20, 0]}
+        zoom={2}
+        className="h-full w-full"
+        zoomControl={true}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        />
+        <CommunityMarkers 
+          communities={communities} 
+          selectedCountry={selectedCountry}
+          selectedCommunity={selectedCommunity}
+        />
+        <MapController 
+          selectedCountry={selectedCountry} 
+          selectedRegion={selectedRegion}
+          selectedCommunity={selectedCommunity}
+          communities={communities}
+        />
+      </MapContainer>
+    </div>
+  )
+}
+
+export default dynamic(() => Promise.resolve(MapComponent), { ssr: false }) 
