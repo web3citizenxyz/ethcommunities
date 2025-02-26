@@ -94,16 +94,36 @@ function MapController({
         }
       } else if (selectedRegion) {
         const regionView = {
-          'North America': { center: [39.8283, -98.5795] as [number, number], zoom: 4 },
-          'South America': { center: [-15.7801, -47.9292] as [number, number], zoom: 4 },
-          'Europe': { center: [48.8566, 2.3522] as [number, number], zoom: 4 },
-          'Asia': { center: [34.0479, 100.6197] as [number, number], zoom: 3 },
-          'Africa': { center: [9.1450, 18.4277] as [number, number], zoom: 3 },
-          'Oceania': { center: [-25.2744, 133.7751] as [number, number], zoom: 4 }
+          'North America': { 
+            center: [45, -95] as [number, number], 
+            zoom: 4 
+          },
+          'South America': { 
+            center: [-20, -65] as [number, number], 
+            zoom: 4 
+          },
+          'Europe': { 
+            center: [50, 15] as [number, number], 
+            zoom: 4 
+          },
+          'Asia': { 
+            center: [35, 105] as [number, number], 
+            zoom: 3.5 
+          },
+          'Africa': { 
+            center: [5, 20] as [number, number], 
+            zoom: 3.5 
+          },
+          'Oceania': { 
+            center: [-25, 135] as [number, number], 
+            zoom: 4 
+          }
         }[selectedRegion]
 
         if (regionView) {
-          map.flyTo(regionView.center, regionView.zoom)
+          map.flyTo(regionView.center, regionView.zoom, {
+            duration: 1.5 // Duración de la animación en segundos
+          })
           initialZoomDoneRef.current = false
           lastCountryRef.current = null
         }
@@ -241,20 +261,23 @@ const MapWithNoSSR = dynamic(
         <MapContainer
           id="main-map"
           key="main-map-container"
-          center={[20, 0]}
-          zoom={2}
+          center={[30, 10]}
+          zoom={3}
           className="h-full w-full"
           zoomControl={true}
-          whenCreated={(map) => {
-            map.off()
-            map.remove()
-          }}
+          minZoom={3}
+          maxZoom={19}
+          maxBounds={[[-50, -170], [80, 190]]}
+          maxBoundsViscosity={1.0}
+          worldCopyJump={false}
         >
           <TileLayer
             url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             subdomains={'abcd'}
             maxZoom={19}
+            noWrap={true}
+            bounds={[[-50, -170], [80, 190]]}
           />
           <CommunityMarkers 
             communities={communities} 
