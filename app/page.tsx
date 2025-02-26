@@ -92,7 +92,7 @@ export default function Home() {
       </div>
 
       {/* Contenido principal con sidebar y mapa */}
-      <div className="flex-1 flex">
+      <div className="flex-1 flex min-h-0">
         <Sidebar
           communityGroups={communityGroups}
           selectedRegion={selectedRegion}
@@ -112,8 +112,8 @@ export default function Home() {
           }}
         />
         
-        <main className="flex-1 p-4">
-          <div className="h-full bg-white rounded-lg shadow-sm border">
+        <main className="flex-1 p-4 flex flex-col">
+          <div className="flex-1 bg-white rounded-lg shadow-sm border max-h-[calc(100vh-240px)]">
             <DynamicMap
               communities={communities}
               selectedRegion={selectedRegion}
@@ -121,6 +121,18 @@ export default function Home() {
               selectedCommunity={selectedCommunity}
             />
           </div>
+          {/* Footer */}
+          <footer className="mt-4 text-sm text-gray-500 flex items-center justify-between px-2">
+            <div>
+              © 2024 ETH Communities
+            </div>
+            <div className="flex gap-4">
+              <a href="#" className="hover:text-gray-900">About</a>
+              <a href="#" className="hover:text-gray-900">GitHub</a>
+              <a href="#" className="hover:text-gray-900">Terms</a>
+              <a href="#" className="hover:text-gray-900">Privacy</a>
+            </div>
+          </footer>
         </main>
       </div>
     </div>
