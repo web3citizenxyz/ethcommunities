@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useMemo } from 'react'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { COUNTRY_COORDINATES } from '@/utils/geocoding'
@@ -220,44 +220,60 @@ function CommunityMarkers({
   )
 }
 
-const MapComponent = ({ communities, selectedRegion, selectedCountry, selectedCommunity }: MapProps) => {
-  useEffect(() => {
-    delete (L.Icon.Default.prototype as any)._getIconUrl
-    L.Icon.Default.mergeOptions({
-      iconUrl: '/images/marker-icon.png',
-      iconRetinaUrl: '/images/marker-icon-2x.png',
-      shadowUrl: '/images/marker-shadow.png',
-    })
-  }, [])
+const MapWithNoSSR = dynamic(
+  () => Promise.resolve(({ 
+    communities, 
+    selectedRegion, 
+    selectedCountry, 
+    selectedCommunity 
+  }: MapProps) => {
+    useEffect(() => {
+      delete (L.Icon.Default.prototype as any)._getIconUrl
+      L.Icon.Default.mergeOptions({
+        iconUrl: '/images/marker-icon.png',
+        iconRetinaUrl: '/images/marker-icon-2x.png',
+        shadowUrl: '/images/marker-shadow.png',
+      })
+    }, [])
 
-  return (
-    <div className="h-full w-full">
-      <MapContainer
-        center={[20, 0]}
-        zoom={2}
-        className="h-full w-full"
-        zoomControl={true}
-      >
-        <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          subdomains={'abcd'}
-          maxZoom={19}
-        />
-        <CommunityMarkers 
-          communities={communities} 
-          selectedCountry={selectedCountry}
-          selectedCommunity={selectedCommunity}
-        />
-        <MapController 
-          selectedCountry={selectedCountry} 
-          selectedRegion={selectedRegion}
-          selectedCommunity={selectedCommunity}
-          communities={communities}
-        />
-      </MapContainer>
-    </div>
-  )
-}
+    return (
+      <div className="h-full w-full relative z-0">
+        <MapContainer
+          key="main-map"
+          center={[20, 0]}
+          zoom={2}
+          className="h-full w-full"
+          zoomControl={true}
+        >
+          <TileLayer
+            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            subdomains={'abcd'}
+            maxZoom={19}
+          />
+          <CommunityMarkers 
+            communities={communities} 
+            selectedCountry={selectedCountry}
+            selectedCommunity={selectedCommunity}
+          />
+          <MapController 
+            selectedCountry={selectedCountry} 
+            selectedRegion={selectedRegion}
+            selectedCommunity={selectedCommunity}
+            communities={communities}
+          />
+        </MapContainer>
+      </div>
+    )
+  }),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex items-center justify-center h-full">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
+      </div>
+    )
+  }
+)
 
-export default dynamic(() => Promise.resolve(MapComponent), { ssr: false }) 
+export default MapWithNoSSR 

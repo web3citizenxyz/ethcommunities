@@ -23,12 +23,10 @@ export default function Sidebar({
 }: SidebarProps) {
   return (
     <div className="w-64 bg-white border-r border-gray-200 flex flex-col">
-      <div className="p-3 border-b border-gray-200 flex items-center bg-white">
-        <Globe className="w-4 h-4 mr-2 text-gray-600" />
-        <span className="font-medium text-gray-900">ETH Communities</span>
+      <div className="h-[88px] pt-4 px-4">
+        {/* Espacio vacío que coincide con el header */}
       </div>
-
-      <div className="overflow-y-auto flex-1">
+      <div className="overflow-y-auto flex-1 pt-[49px]">
         {REGIONS.map((region) => {
           const regionData = communityGroups[region]
           const hasData = regionData && Object.keys(regionData.countries).length > 0

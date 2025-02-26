@@ -55,44 +55,72 @@ export default function Home() {
     return acc
   }, {} as Record<string, { countries: Record<string, Community[]> }>)
 
-  const handleSearch = (query: string) => {
-    setSearchQuery(query)
-    // Aquí implementaremos la lógica de búsqueda
+  const handleSearchResult = (result: { type: 'country' | 'community', value: string | Community }) => {
+    if (result.type === 'country') {
+      setSelectedRegion(REGION_MAPPING[result.value as string])
+      setSelectedCountry(result.value as string)
+      setSelectedCommunity(null)
+    } else {
+      const community = result.value as Community
+      setSelectedRegion(REGION_MAPPING[community.country])
+      setSelectedCountry(community.country)
+      setSelectedCommunity(community)
+    }
   }
 
   return (
-    <div className="h-screen flex bg-white">
-      <Sidebar
-        communityGroups={communityGroups}
-        selectedRegion={selectedRegion}
-        selectedCountry={selectedCountry}
-        onRegionSelect={(region) => {
-          setSelectedRegion(region)
-          setSelectedCountry(null)
-          setSelectedCommunity(null)
-        }}
-        onCountrySelect={(country) => {
-          setSelectedCountry(country)
-          setSelectedCommunity(null)
-        }}
-        onCommunitySelect={(community) => {
-          setSelectedCountry(community.country)
-          setSelectedCommunity(community)
-        }}
-      />
-      
-      <div className="flex-1 flex flex-col">
-        <SearchHeader 
-          searchQuery={searchQuery}
-          onSearchChange={handleSearch}
-        />
-        <main className="flex-1">
-          <DynamicMap
+    <div className="h-screen flex flex-col bg-white">
+      {/* Header con título y búsqueda */}
+      <div className="border-b">
+        <div className="px-4 py-4 flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">ETH Communities</h1>
+            <p className="mt-1 text-sm text-gray-500">
+              10K+ communities around the world. 
+              <a href="/add-community" className="text-blue-500 hover:text-blue-600 ml-1">
+                Submit your own
+              </a>
+            </p>
+          </div>
+          <SearchHeader 
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
             communities={communities}
-            selectedRegion={selectedRegion}
-            selectedCountry={selectedCountry}
-            selectedCommunity={selectedCommunity}
+            onSelectResult={handleSearchResult}
           />
+        </div>
+      </div>
+
+      {/* Contenido principal con sidebar y mapa */}
+      <div className="flex-1 flex">
+        <Sidebar
+          communityGroups={communityGroups}
+          selectedRegion={selectedRegion}
+          selectedCountry={selectedCountry}
+          onRegionSelect={(region) => {
+            setSelectedRegion(region)
+            setSelectedCountry(null)
+            setSelectedCommunity(null)
+          }}
+          onCountrySelect={(country) => {
+            setSelectedCountry(country)
+            setSelectedCommunity(null)
+          }}
+          onCommunitySelect={(community) => {
+            setSelectedCountry(community.country)
+            setSelectedCommunity(community)
+          }}
+        />
+        
+        <main className="flex-1 p-4">
+          <div className="h-full bg-white rounded-lg shadow-sm border">
+            <DynamicMap
+              communities={communities}
+              selectedRegion={selectedRegion}
+              selectedCountry={selectedCountry}
+              selectedCommunity={selectedCommunity}
+            />
+          </div>
         </main>
       </div>
     </div>
