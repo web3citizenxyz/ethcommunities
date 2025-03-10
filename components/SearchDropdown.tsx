@@ -5,8 +5,8 @@ import { createPortal } from 'react-dom'
 import { Community } from '@/types'
 
 interface SearchDropdownProps {
-  results: Array<{ type: 'country' | 'community', value: string | Community }>
-  onSelect: (result: { type: 'country' | 'community', value: string | Community }) => void
+  results: Array<{ type: 'country' | 'community' | 'chain', value: string | Community }>
+  onSelect: (result: { type: 'country' | 'community' | 'chain', value: string | Community }) => void
   onClose: () => void
   inputRef: React.RefObject<HTMLDivElement>
 }
@@ -42,26 +42,38 @@ export default function SearchDropdown({ results, onSelect, onClose, inputRef }:
       />
       <div 
         ref={dropdownRef}
-        className="bg-white rounded-md shadow-lg border max-h-64 overflow-y-auto"
+        className="bg-[#2A2D39] rounded-md shadow-lg border border-[#F1EAE1]/20 max-h-64 overflow-y-auto"
       >
         {results.map((result, index) => (
           <button
             key={index}
-            className="w-full text-left px-3 py-2 hover:bg-gray-50 flex items-center justify-between"
+            className="w-full text-left px-3 py-2 hover:bg-[#2A2D39]/50 flex items-center justify-between"
             onClick={() => onSelect(result)}
           >
             {result.type === 'country' ? (
               <>
-                <span className="text-gray-600">{result.value as string}</span>
-                <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Country</span>
+                <span className="text-[#F1EAE1]">{result.value as string}</span>
+                <span className="text-xs bg-[#2A2D39]/70 px-2 py-0.5 rounded text-[#F1EAE1]/70">Country</span>
+              </>
+            ) : result.type === 'chain' ? (
+              <>
+                <span className="text-[#F1EAE1]">{result.value as string}</span>
+                <span className="text-xs bg-[#2A2D39]/70 px-2 py-0.5 rounded text-[#F1EAE1]">Chain</span>
               </>
             ) : (
               <>
                 <div>
-                  <div className="text-gray-900">{(result.value as Community).name}</div>
-                  <div className="text-xs text-gray-500">{(result.value as Community).country}</div>
+                  <div className="text-[#F1EAE1]">{(result.value as Community).name}</div>
+                  <div className="text-xs text-[#F1EAE1]/70">
+                    {(result.value as Community).country}
+                    {(result.value as Community).chain && (
+                      <span className="ml-2 text-[#F1EAE1]">
+                        {(result.value as Community).chain}
+                      </span>
+                    )}
+                  </div>
                 </div>
-                <span className="text-xs bg-gray-100 px-2 py-0.5 rounded text-gray-500">Community</span>
+                <span className="text-xs bg-[#2A2D39]/70 px-2 py-0.5 rounded text-[#F1EAE1]/70">Community</span>
               </>
             )}
           </button>
