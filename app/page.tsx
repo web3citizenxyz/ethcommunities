@@ -97,7 +97,7 @@ export default function Home() {
     .sort((a, b) => b.count - a.count)
 
   return (
-    <div className="h-screen overflow-y-auto bg-[#2A2D39]">
+    <div className="snap-container bg-[#2A2D39]">
       {/* Map Section */}
       <section className="snap-section relative">
         <div className="h-screen flex flex-col bg-[#2A2D39]">
@@ -168,8 +168,8 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="snap-section bg-[#2A2D39] relative">
-        <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+      <section id="about" className="snap-section bg-[#2A2D39] relative flex items-center justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-[#F1EAE1] sm:text-4xl">
               What is ETH Communities?

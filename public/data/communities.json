@@ -21,7 +21,8 @@
     "name": "ETH Abuja",
     "website": "https://ethabuja.com",
     "contact": "ethabuja@gmail.com",
-    "country": "Nigeria"
+    "country": "Nigeria",
+    "city": "Abuja"
   },
   {
     "name": "ETH Enugu",
@@ -55,17 +56,20 @@
   {
     "name": "Crecimiento",
     "website": "https://bento.me/crecimientoar",
-    "country": "Argentina"
+    "country": "Argentina",
+    "city": "Buenos Aires"
   },
   {
     "name": "Ethereum Argentina",
     "website": "https://ethereumargentina.org/",
-    "country": "Argentina"
+    "country": "Argentina",
+    "city": "Buenos Aires"
   },
   {
     "name": "Ethereum Bolivia",
     "website": "https://t.co/UxNHXuwv8H",
-    "country": "Bolivia"
+    "country": "Bolivia",
+    "city": "La Paz"
   },
   {
     "name": "Modular Crypto",
@@ -75,12 +79,14 @@
   {
     "name": "ETH Toronto",
     "website": "https://www.ethtoronto.ca/",
-    "country": "Canada"
+    "country": "Canada",
+    "city": "Toronto"
   },
   {
     "name": "ETH Salvador",
     "website": "https://ethsalvador.org/",
-    "country": "El Salvador"
+    "country": "El Salvador",
+    "city": "San Salvador"
   },
   {
     "name": "Ethereum Honduras",
@@ -90,12 +96,14 @@
   {
     "name": "Ethereum Mexico",
     "website": "https://ethmexico.org/",
-    "country": "Mexico"
+    "country": "Mexico",
+    "city": "Mexico City"
   },
   {
     "name": "Monterrey",
     "twitter": "https://x.com/eth_mty",
-    "country": "Mexico"
+    "country": "Mexico",
+    "city": "Monterrey"
   },
   {
     "name": "ETH Lima",
@@ -105,7 +113,8 @@
   {
     "name": "Ethereum Uruguay",
     "website": "https://www.ethereumuruguay.org/",
-    "country": "Uruguay"
+    "country": "Uruguay",
+    "city": "Montevideo"
   },
   {
     "name": "Boston Blockchain Week",
@@ -113,29 +122,34 @@
     "country": "USA"
   },
   {
-    "name": "ETHDenver",
+    "name": "ETH Denver",
     "website": "https://www.ethdenver.com/",
-    "country": "USA"
+    "country": "USA",
+    "city": "Denver"
   },
   {
     "name": "ETH Ensenada",
     "twitter": "https://x.com/ETH_Ensenada",
-    "country": "USA"
+    "country": "USA",
+    "city": "Ensenada"
   },
   {
     "name": "ETH Miami",
     "website": "https://ethmiami.net/",
-    "country": "USA"
+    "country": "USA",
+    "city": "Miami"
   },
   {
     "name": "ETH San Francisco",
     "website": "https://www.ethereumsf.org/",
-    "country": "USA"
+    "country": "USA",
+    "city": "San Francisco"
   },
   {
     "name": "NFT NYC",
     "website": "https://www.nft.nyc/",
-    "country": "USA"
+    "country": "USA",
+    "city": "New York"
   },
   {
     "name": "LATAM",
@@ -155,12 +169,14 @@
   {
     "name": "ETH Shanghai",
     "website": "https://ethshanghai.org/",
-    "country": "China"
+    "country": "China",
+    "city": "Shanghai"
   },
   {
     "name": "ETH Tokio",
     "website": "https://ethtokyo.org/",
-    "country": "Japan"
+    "country": "Japan",
+    "city": "Tokyo"
   },
   {
     "name": "ETHTaipei",
@@ -170,12 +186,14 @@
   {
     "name": "ETH Sofia",
     "website": "https://www.ethsofia.com/",
-    "country": "Bulgaria"
+    "country": "Bulgaria",
+    "city": "Sofia"
   },
   {
     "name": "ETH Lisbon",
     "website": "https://ethlisbon.org/",
-    "country": "Czech Republic"
+    "country": "Czech Republic",
+    "city": "Prague"
   },
   {
     "name": "Oxford Blockchain Society",

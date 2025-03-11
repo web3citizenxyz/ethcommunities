@@ -40,4 +40,36 @@ export const COUNTRY_COORDINATES: Record<string, [number, number]> = {
   // Oceania
   'Australia': [-25.2744, 133.7751],
   'New Zealand': [-40.9006, 174.8860]
+}
+
+export async function geocodeLocation(city: string, country: string): Promise<{ lat: number; lng: number } | null> {
+  try {
+    // Add a delay to respect rate limits
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?` + 
+      `city=${encodeURIComponent(city)}&` +
+      `country=${encodeURIComponent(country)}&` +
+      `format=json&limit=1`,
+      {
+        headers: {
+          'User-Agent': 'ETHCommunity/1.0'
+        }
+      }
+    );
+
+    const data = await response.json();
+    
+    if (data[0]) {
+      return {
+        lat: parseFloat(data[0].lat),
+        lng: parseFloat(data[0].lon)
+      };
+    }
+    return null;
+  } catch (error) {
+    console.error('Geocoding error:', error);
+    return null;
+  }
 } 

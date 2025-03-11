@@ -4,6 +4,11 @@ export interface Community {
   twitter?: string;
   country: string;
   city?: string;
+  chain?: string;
+  coordinates?: {
+    lat: number;
+    lng: number;
+  };
 }
 
 export interface CommunityGroup {

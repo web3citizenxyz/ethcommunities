@@ -4,6 +4,7 @@ import { useEffect, useRef, useMemo } from 'react'
 import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import { COUNTRY_COORDINATES } from '@/utils/geocoding'
+import { CITY_COORDINATES } from '@/utils/cityCoordinates'
 import 'leaflet/dist/leaflet.css'
 import dynamic from 'next/dynamic'
 
@@ -13,6 +14,7 @@ interface Community {
   twitter?: string
   country: string
   city?: string
+  coordinates?: { lat: number; lng: number }
 }
 
 interface MapProps {
@@ -56,28 +58,37 @@ function MapController({
   useEffect(() => {
     const handleNavigation = () => {
       if (selectedCommunity) {
-        const coordinates = COUNTRY_COORDINATES[selectedCommunity.country]
-        if (coordinates) {
+        // Use community coordinates if available, otherwise fallback to country coordinates
+        const communityCoords = selectedCommunity.coordinates
+          ? [selectedCommunity.coordinates.lat, selectedCommunity.coordinates.lng]
+          : COUNTRY_COORDINATES[selectedCommunity.country]
+
+        if (communityCoords) {
           const isAlreadyInCountry = selectedCommunity.country === lastCountryRef.current
           
           if (!isAlreadyInCountry || !initialZoomDoneRef.current) {
-            map.flyTo(coordinates, 6)
+            map.flyTo(communityCoords as [number, number], 6)
             initialZoomDoneRef.current = true
             manualZoomRef.current = false
           } else {
-            // Si ya estamos en el país, solo centramos en la comunidad
-            const countryCommunities = communities.filter(c => c.country === selectedCommunity.country)
-            const index = countryCommunities.findIndex(c => c.name === selectedCommunity.name)
-            
-            if (countryCommunities.length > 1 && index !== -1) {
-              const offset = 0.5
-              const adjustedCoordinates: [number, number] = [
-                coordinates[0] + (index * offset * (Math.random() > 0.5 ? 1 : -1)),
-                coordinates[1] + (index * offset * (Math.random() > 0.5 ? 1 : -1))
-              ]
-              map.panTo(adjustedCoordinates)
+            // If already in country and no specific coordinates, apply offset
+            if (!selectedCommunity.coordinates) {
+              const countryCommunities = communities.filter(c => c.country === selectedCommunity.country)
+              const index = countryCommunities.findIndex(c => c.name === selectedCommunity.name)
+              
+              if (countryCommunities.length > 1 && index !== -1) {
+                const offset = 0.5
+                const adjustedCoordinates: [number, number] = [
+                  communityCoords[0] + (index * offset * (Math.random() > 0.5 ? 1 : -1)),
+                  communityCoords[1] + (index * offset * (Math.random() > 0.5 ? 1 : -1))
+                ]
+                map.panTo(adjustedCoordinates)
+              } else {
+                map.panTo(communityCoords as [number, number])
+              }
             } else {
-              map.panTo(coordinates)
+              // If we have specific coordinates, use them directly
+              map.panTo(communityCoords as [number, number])
             }
           }
           lastCountryRef.current = selectedCommunity.country
@@ -175,27 +186,39 @@ function CommunityMarkers({
   return (
     <>
       {Object.entries(communitiesByCountry).map(([country, communities]) => {
-        const coordinates = COUNTRY_COORDINATES[country]
-        if (!coordinates) {
+        const countryCoords = COUNTRY_COORDINATES[country]
+        if (!countryCoords) {
           console.warn(`No coordinates found for country: ${country}`)
           return null
         }
 
         return communities.map((community, index) => {
-          const offset = 0.5
-          const adjustedCoordinates: [number, number] = communities.length > 1 
-            ? [
-                coordinates[0] + (index * offset * (Math.random() > 0.5 ? 1 : -1)),
-                coordinates[1] + (index * offset * (Math.random() > 0.5 ? 1 : -1))
-              ]
-            : coordinates
+          // Try to get city coordinates first
+          let coordinates: [number, number] | null = null
+          
+          if (community.city && CITY_COORDINATES[community.city]) {
+            coordinates = CITY_COORDINATES[community.city]
+          } else if (community.coordinates) {
+            coordinates = [community.coordinates.lat, community.coordinates.lng]
+          }
+
+          // If no city coordinates or custom coordinates, use country coordinates with offset
+          if (!coordinates) {
+            const offset = 0.5
+            coordinates = communities.length > 1 
+              ? [
+                  countryCoords[0] + (index * offset * (Math.random() > 0.5 ? 1 : -1)),
+                  countryCoords[1] + (index * offset * (Math.random() > 0.5 ? 1 : -1))
+                ]
+              : countryCoords
+          }
 
           const markerId = `${community.name}-${community.country}`
 
           return (
             <Marker 
               key={markerId}
-              position={adjustedCoordinates}
+              position={coordinates}
               ref={(ref) => {
                 if (ref) {
                   markerRefs.current[markerId] = ref
