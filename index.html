@@ -3,137 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Community Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <style>
-        #map { height: 600px; width: 100%; }
-    </style>
+    <title>Ethereum Communities</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body>
-    <h1>Ethereum Communities Around the World</h1>
-    <p>Submit your community on <a href="https://github.com/eugeniatel/ethcommunity">our repo</a>.</p>
+<body class="bg-gray-50">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 border-r bg-white">
+            <div class="flex items-center gap-2 p-4 border-b">
+                <i data-lucide="globe" class="w-5 h-5"></i>
+                <h1 class="font-semibold">Communities</h1>
+            </div>
+            <div class="overflow-auto h-[calc(100vh-57px)]" id="sidebar-communities">
+                <!-- Communities will be populated here -->
+            </div>
+        </div>
 
-    <!-- Submit Community Form Section -->
-    <h2>Submit Your Community</h2>
-    <form id="communityForm">
-        <label for="name">Community Name:</label>
-        <input type="text" id="name" required>
+        <!-- Main Content -->
+        <div class="flex-1 flex flex-col">
+            <header class="border-b bg-white">
+                <div class="flex items-center justify-between p-4">
+                    <h1 class="text-xl font-semibold">Ethereum Communities</h1>
+                    <div class="flex items-center gap-2">
+                        <button id="viewToggle" class="px-3 py-2 border rounded-md hover:bg-gray-50 flex items-center gap-2">
+                            <i data-lucide="list" class="w-4 h-4"></i>
+                            <span>List View</span>
+                        </button>
+                        <button id="addCommunity" class="px-3 py-2 bg-black text-white rounded-md hover:bg-gray-800 flex items-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            <span>Add Community</span>
+                        </button>
+                        <button id="themeToggle" class="p-2 border rounded-md hover:bg-gray-50">
+                            <i data-lucide="sun" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+            </header>
 
-        <label for="website">Website:</label>
-        <input type="url" id="website" required>
+            <main class="flex-1 p-4">
+                <div id="map-view" class="h-full w-full rounded-lg overflow-hidden border">
+                    <!-- Map will be rendered here -->
+                </div>
+                <div id="list-view" class="hidden grid gap-4">
+                    <!-- List view will be populated here -->
+                </div>
+            </main>
+        </div>
+    </div>
 
-        <label for="twitter">Twitter/X:</label>
-        <input type="text" id="twitter">
+    <!-- Add Community Modal -->
+    <div id="addCommunityModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 class="text-xl font-semibold mb-4">Add New Community</h2>
+            <form id="communityForm" class="space-y-4">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Community Name</label>
+                    <input type="text" id="name" name="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="website" class="block text-sm font-medium text-gray-700">Website</label>
+                    <input type="url" id="website" name="website" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="twitter" class="block text-sm font-medium text-gray-700">Twitter/X</label>
+                    <input type="text" id="twitter" name="twitter" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                    <input type="text" id="city" name="city" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div>
+                    <label for="country" class="block text-sm font-medium text-gray-700">Country</label>
+                    <input type="text" id="country" name="country" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                </div>
+                <div class="flex justify-end gap-2 mt-4">
+                    <button type="button" id="cancelAdd" class="px-4 py-2 border rounded-md hover:bg-gray-50">Cancel</button>
+                    <button type="submit" class="px-4 py-2 bg-black text-white rounded-md hover:bg-gray-800">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        <label for="contact">Contact Info:</label>
-        <input type="text" id="contact" required>
-
-        <label for="city">City:</label>
-        <input type="text" id="city">
-
-        <label for="country">Country:</label>
-        <input type="text" id="country">
-
-        <button type="submit">Submit</button>
-    </form>
-
-    <p id="responseMessage"></p>
-    <!-- End Submit Community Form Section -->
-
-    <!-- Leaflet Map -->
-    <div id="map"></div>
-
-    <h2>Communities</h2>
-    <div id="community-list"></div>
-    
+    <script src="js/app.js"></script>
     <script>
-        var map = L.map('map').setView([20, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        function getContinent(country) {
-            const continents = {
-                "North America": ["USA", "Canada", "Mexico"],
-                "South America": ["Argentina", "Brazil", "Chile"],
-                "Europe": ["Germany", "France", "UK", "Spain", "Italy"],
-                "Africa": ["Ethiopia", "Nigeria", "South Africa", "Kenya"],
-                "Asia": ["China", "Japan", "India", "Singapore"],
-                "Oceania": ["Australia", "New Zealand"]
-            };
-            for (const [continent, countries] of Object.entries(continents)) {
-                if (countries.includes(country)) return continent;
-            }
-            return "Other";
-        }
-
-        function fetchCoordinates(city, country) {
-            return axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${city},${country}`)
-                .then(response => {
-                    if (response.data.length > 0) {
-                        return {
-                            latitude: parseFloat(response.data[0].lat),
-                            longitude: parseFloat(response.data[0].lon)
-                        };
-                    }
-                    return null;
-                })
-                .catch(error => {
-                    console.error(`Error fetching coordinates for ${city}, ${country}:`, error);
-                    return null;
-                });
-        }
-
-        async function loadCommunities() {
-            let response = await fetch('communities.json');
-            let data = await response.json();
-            let communitiesByContinent = {};
-            
-            for (let community of data) {
-                if (!community.latitude || !community.longitude) {
-                    let coords = await fetchCoordinates(community.city, community.country);
-                    if (coords) {
-                        community.latitude = coords.latitude;
-                        community.longitude = coords.longitude;
-                    } else {
-                        continue; // Skip if no coordinates found
-                    }
-                }
-                
-                L.marker([community.latitude, community.longitude])
-                    .addTo(map)
-                    .bindPopup(`<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact || 'N/A'}`);
-                
-                let continent = getContinent(community.country);
-                if (!communitiesByContinent[continent]) communitiesByContinent[continent] = {};
-                if (!communitiesByContinent[continent][community.country]) communitiesByContinent[continent][community.country] = [];
-                
-                communitiesByContinent[continent][community.country].push(community);
-            }
-            
-            let communityList = document.getElementById("community-list");
-            for (const [continent, countries] of Object.entries(communitiesByContinent)) {
-                let continentElement = document.createElement("h3");
-                continentElement.textContent = continent;
-                communityList.appendChild(continentElement);
-                
-                for (const [country, communities] of Object.entries(countries)) {
-                    let countryElement = document.createElement("h4");
-                    countryElement.textContent = country;
-                    communityList.appendChild(countryElement);
-                    
-                    communities.forEach(community => {
-                        let communityElement = document.createElement("p");
-                        communityElement.innerHTML = `<b>${community.name}</b><br><a href="${community.website}">Website</a><br>Contact: ${community.contact || 'N/A'}`;
-                        communityList.appendChild(communityElement);
-                    });
-                }
-            }
-        }
-
-        loadCommunities();
+        // Initialize Lucide icons
+        lucide.createIcons();
     </script>
 </body>
 </html>
+
