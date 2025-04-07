@@ -102,12 +102,24 @@ export default function Home() {
       {/* Map Section */}
       <section className="snap-section relative">
         <div className="h-screen flex flex-col bg-[#2A2D39]">
-          {/* Header with title and search */}
+          {/* Header with logo, title and search */}
           <div className="border-b border-[#F1EAE1]/20">
             <div className="px-4 py-4 flex items-center justify-between">
-              <div>
-                <span className="text-white text-lg font-medium">ETH Communities</span>
+              {/* Logo */}
+              <div className="w-8 h-8">
+                <img 
+                  src="/images/Perfil.png" 
+                  alt="Web3 Citizen Logo" 
+                  className="w-full h-full object-contain"
+                />
               </div>
+              
+              {/* Title */}
+              <div className="absolute left-1/2 transform -translate-x-1/2">
+                <h1 className="text-2xl font-bold text-[#F1EAE1]">ETH Communities</h1>
+              </div>
+
+              {/* Search and Add Community */}
               <div className="flex items-center gap-4">
                 <SearchHeader 
                   searchQuery={searchQuery}
@@ -117,17 +129,6 @@ export default function Home() {
                 />
               </div>
             </div>
-          </div>
-
-          {/* Título central */}
-          <div key="title-section" className="pt-16 pb-8 text-center">
-            <h1 className="text-3xl font-semibold text-white mb-4">ETH Communities</h1>
-            <p className="text-zinc-400">
-              10K+ communities around the world.{' '}
-              <Link href="/add-community" className="text-blue-400 hover:text-blue-300">
-                Submit your own
-              </Link>
-            </p>
           </div>
 
           {/* Main content with sidebar and map */}
@@ -157,7 +158,7 @@ export default function Home() {
             <main className="flex-1 p-8 flex flex-col">
               <div className="container mx-auto">
                 <div className="bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6" 
-                     style={{ height: '70vh', maxHeight: '800px' }}>
+                     style={{ height: 'calc(100vh - 200px)' }}>
                   <DynamicMap
                     key={`map-${selectedRegion}-${selectedCountry}-${selectedCommunity?.name}-${Date.now()}`}
                     communities={filteredCommunities}
@@ -187,7 +188,7 @@ export default function Home() {
               What is ETH Communities?
             </h2>
             <p className="mt-4 text-xl text-[#F1EAE1]/70">
-              Connecting Ethereum communities worldwide
+              Find and connect with Ethereum communities around the world
             </p>
           </div>
 
@@ -200,7 +201,8 @@ export default function Home() {
                 </div>
                 <h3 className="mt-6 text-lg font-medium text-[#F1EAE1]">Global Network</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  Connect with and learn from the various communities across the globe.
+                  Learn from communities <br />
+                  across the globe.
                 </p>
               </div>
 
@@ -211,10 +213,10 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-[#F1EAE1]">Community-Driven</h3>
+                <h3 className="mt-6 text-lg font-medium text-[#F1EAE1]">Community-Built</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  ETH Communities is built by the community.<br />
-                  Add your local cabal and grow the garden.
+                  Add your local cabal and <br />
+                  grow the garden.
                 </p>
               </div>
 
@@ -227,8 +229,8 @@ export default function Home() {
                 </div>
                 <h3 className="mt-6 text-lg font-medium text-[#F1EAE1]">Rollup Agnostic</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  From L1 to L2s, we support all ETH communities. <br />
-                  If your community L2 centric, just add the specific chain.
+                  From L1 to L2s, we include all <br />
+                  ETH communities and recurring meetups.
                 </p>
               </div>
             </div>
