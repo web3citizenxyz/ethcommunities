@@ -9,6 +9,7 @@ import { REGION_MAPPING } from "../utils/regionMapping"
 import { Community } from "@/types"
 import SearchHeader from '@/components/SearchHeader'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import Link from 'next/link'
 
 // Importar el mapa de forma dinámica para evitar errores de SSR
 const DynamicMap = dynamic(() => import('../components/map'), { 
@@ -105,21 +106,28 @@ export default function Home() {
           <div className="border-b border-[#F1EAE1]/20">
             <div className="px-4 py-4 flex items-center justify-between">
               <div>
-                <h1 className="text-2xl font-semibold text-[#F1EAE1]">ETH Communities</h1>
-                <p className="mt-1 text-sm text-[#F1EAE1]/70">
-                  10K+ communities around the world. 
-                  <a href="/add-community" className="text-[#F1EAE1] hover:text-[#F1EAE1]/80 ml-1">
-                    Submit your own
-                  </a>
-                </p>
+                <span className="text-white text-lg font-medium">ETH Communities</span>
               </div>
-              <SearchHeader 
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                communities={communities}
-                onSelectResult={handleSearchResult}
-              />
+              <div className="flex items-center gap-4">
+                <SearchHeader 
+                  searchQuery={searchQuery}
+                  onSearchChange={setSearchQuery}
+                  communities={communities}
+                  onSelectResult={handleSearchResult}
+                />
+              </div>
             </div>
+          </div>
+
+          {/* Título central */}
+          <div key="title-section" className="pt-16 pb-8 text-center">
+            <h1 className="text-3xl font-semibold text-white mb-4">ETH Communities</h1>
+            <p className="text-zinc-400">
+              10K+ communities around the world.{' '}
+              <Link href="/add-community" className="text-blue-400 hover:text-blue-300">
+                Submit your own
+              </Link>
+            </p>
           </div>
 
           {/* Main content with sidebar and map */}
@@ -148,9 +156,10 @@ export default function Home() {
             
             <main className="flex-1 p-8 flex flex-col">
               <div className="container mx-auto">
-                <div className="bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6" style={{ height: '70vh', maxHeight: '800px' }}>
+                <div className="bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6" 
+                     style={{ height: '70vh', maxHeight: '800px' }}>
                   <DynamicMap
-                    key={`map-${selectedRegion}-${selectedCountry}-${selectedCommunity?.name}`}
+                    key={`map-${selectedRegion}-${selectedCountry}-${selectedCommunity?.name}-${Date.now()}`}
                     communities={filteredCommunities}
                     selectedRegion={selectedRegion}
                     selectedCountry={selectedCountry}
