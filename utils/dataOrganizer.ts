@@ -24,7 +24,7 @@ const REGIONS_CONFIG = {
   }
 } as const
 
-function getCountryFromCoordinates(lat: number, lng: number): string {
+function getCountryFromCoordinates(p0: { lat: number; lng: number }, lat: number, lng: number): string {
   // Implementación básica - en producción deberías usar una API de geocodificación
   const COUNTRY_COORDINATES = {
     'USA': { minLat: 24.396308, maxLat: 49.384358, minLng: -125.000000, maxLng: -66.934570 },
@@ -46,7 +46,11 @@ export function organizeCommunitiesByRegion(communities: Community[]): Region[] 
   const communityByCountry = new Map<string, Community[]>()
   
   communities.forEach(community => {
-    const country = getCountryFromCoordinates(community.latitude, community.longitude)
+    const country = getCountryFromCoordinates(
+      community.coordinates!,
+      community.coordinates!.lat,
+      community.coordinates!.lng
+    )
     if (!communityByCountry.has(country)) {
       communityByCountry.set(country, [])
     }

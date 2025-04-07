@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Community } from "@/types"
 import { COUNTRY_COORDINATES } from "@/utils/geocoding"
 import { useState, useCallback } from 'react'
-import SearchDropdown from './SearchDropdown'
+import SearchDropdown from '@/components/SearchDropdown'
 
 interface SearchHeaderProps {
   searchQuery: string

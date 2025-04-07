@@ -5,14 +5,14 @@ import dynamic from 'next/dynamic'
 import { Globe, Plus, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Sidebar from "@/components/Sidebar"
-import { REGION_MAPPING } from "../utils/regionMapping"
+import { REGION_MAPPING } from "@/utils/regionMapping"
 import { Community } from "@/types"
 import SearchHeader from '@/components/SearchHeader'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import Link from 'next/link'
 
 // Importar el mapa de forma dinámica para evitar errores de SSR
-const DynamicMap = dynamic(() => import('../components/map'), { 
+const DynamicMap = dynamic(() => import('@/components/map'), { 
   ssr: false,
   loading: () => (
     <div className="flex items-center justify-center h-full">

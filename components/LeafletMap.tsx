@@ -36,7 +36,7 @@ export default function LeafletMap({ center, zoom, communities }: LeafletMapProp
       {communities.map((community) => (
         <Marker 
           key={community.name}
-          position={[community.latitude, community.longitude]}
+          position={[community.coordinates!.lat, community.coordinates!.lng]}
         >
           <Popup>
             <div className="p-2">

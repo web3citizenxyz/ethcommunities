@@ -1,6 +1,7 @@
 export interface Community {
   name: string;
   website?: string;
+  description?: string;
   twitter?: string;
   country: string;
   city?: string;
