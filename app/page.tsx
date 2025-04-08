@@ -11,7 +11,6 @@ import SearchHeader from '@/components/SearchHeader'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import Link from 'next/link'
 
-// Importar el mapa de forma dinámica para evitar errores de SSR
 const DynamicMap = dynamic(() => import('@/components/map'), { 
   ssr: false,
   loading: () => (
@@ -22,6 +21,7 @@ const DynamicMap = dynamic(() => import('@/components/map'), {
 })
 
 export default function Home() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [communities, setCommunities] = useState<Community[]>([])
   const [selectedRegion, setSelectedRegion] = useState<string | null>(null)
   const [selectedCountry, setSelectedCountry] = useState<string | null>(null)
@@ -42,29 +42,14 @@ export default function Home() {
     loadCommunities()
   }, [])
 
-  // Filter communities based on selected chain
   const filteredCommunities = selectedChain
-    ? communities.filter(community => {
-        console.log('Filtering community:', community.name, 'chain:', community.chain, 'selected chain:', selectedChain)
-        return community.chain === selectedChain
-      })
+    ? communities.filter(community => community.chain === selectedChain)
     : communities
-  
-  console.log('Selected chain:', selectedChain)
-  console.log('Filtered communities:', filteredCommunities)
 
-  // Organize communities by region and country
   const communityGroups = filteredCommunities.reduce((acc, community) => {
     const region = REGION_MAPPING[community.country] || 'Other'
-    
-    if (!acc[region]) {
-      acc[region] = { countries: {} }
-    }
-    
-    if (!acc[region].countries[community.country]) {
-      acc[region].countries[community.country] = []
-    }
-    
+    if (!acc[region]) acc[region] = { countries: {} }
+    if (!acc[region].countries[community.country]) acc[region].countries[community.country] = []
     acc[region].countries[community.country].push(community)
     return acc
   }, {} as Record<string, { countries: Record<string, Community[]> }>)
@@ -86,10 +71,10 @@ export default function Home() {
       setSelectedCountry(community.country)
       setSelectedCommunity(community)
       setSelectedChain(null)
+      setIsSidebarOpen(false)
     }
   }
 
-  // Calculate metrics for communities by region and sort by count
   const communityMetrics = Object.entries(communityGroups)
     .reduce((acc, [region, data]) => {
       const count = Object.values(data.countries).flat().length
@@ -99,28 +84,17 @@ export default function Home() {
 
   return (
     <div className="snap-container bg-[#2A2D39]">
-      {/* Map Section */}
       <section className="snap-section relative">
         <div className="h-screen flex flex-col bg-[#2A2D39]">
-          {/* Header with logo, title and search */}
           <div className="border-b border-[#F1EAE1]/20">
-            <div className="px-4 py-4 flex items-center justify-between">
-              {/* Logo */}
+            <div className="px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
               <div className="w-8 h-8">
-                <img 
-                  src="/images/Perfil.png" 
-                  alt="Web3 Citizen Logo" 
-                  className="w-full h-full object-contain"
-                />
+                <img src="/images/Perfil.png" alt="Web3 Citizen Logo" className="w-full h-full object-contain" />
               </div>
-              
-              {/* Title */}
-              <div className="absolute left-1/2 transform -translate-x-1/2">
+              <div className="sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 text-center sm:text-left">
                 <h1 className="text-2xl font-bold text-[#F1EAE1]">ETH Communities</h1>
               </div>
-
-              {/* Search and Add Community */}
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-end sm:justify-start gap-4">
                 <SearchHeader 
                   searchQuery={searchQuery}
                   onSearchChange={setSearchQuery}
@@ -131,34 +105,46 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Main content with sidebar and map */}
-          <div className="flex-1 flex min-h-0">
-            <Sidebar
-              communityGroups={communityGroups}
-              selectedRegion={selectedRegion}
-              selectedCountry={selectedCountry}
-              onRegionSelect={(region) => {
-                setSelectedRegion(region)
-                setSelectedCountry(null)
-                setSelectedCommunity(null)
-                setSelectedChain(null)
-              }}
-              onCountrySelect={(country) => {
-                setSelectedCountry(country)
-                setSelectedCommunity(null)
-                setSelectedChain(null)
-              }}
-              onCommunitySelect={(community) => {
-                setSelectedCountry(community.country)
-                setSelectedCommunity(community)
-                setSelectedChain(null)
-              }}
-            />
-            
+          <div className="lg:hidden px-4 py-2">
+            <button
+              onClick={() => setIsSidebarOpen(true)}
+              className="text-sm text-white bg-[#2A2D39]/50 border border-[#F1EAE1]/20 px-4 py-2 rounded-lg hover:bg-[#2A2D39]/70 transition"
+            >
+              Open Search Options
+            </button>
+          </div>
+
+          <div className="flex-1 flex min-h-0 relative overflow-hidden">
+            <div className={`absolute top-[88px] left-0 h-[calc(100%-88px)] w-64 bg-[#2A2D39] z-40 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0 lg:z-auto lg:w-64`}>
+              <Sidebar
+                communityGroups={communityGroups}
+                selectedRegion={selectedRegion}
+                selectedCountry={selectedCountry}
+                onRegionSelect={(region) => {
+                  setSelectedRegion(region)
+                  setSelectedCountry(null)
+                  setSelectedCommunity(null)
+                  setSelectedChain(null)
+                }}
+                onCountrySelect={(country) => {
+                  setSelectedCountry(country)
+                  setSelectedCommunity(null)
+                  setSelectedChain(null)
+                }}
+                onCommunitySelect={(community) => {
+                  setSelectedCountry(community.country)
+                  setSelectedCommunity(community)
+                  setSelectedChain(null)
+                  setIsSidebarOpen(false)
+                }}
+                isMobileOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+              />
+            </div>
+
             <main className="flex-1 p-8 flex flex-col">
               <div className="container mx-auto">
-                <div className="bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6" 
-                     style={{ height: 'calc(100vh - 200px)' }}>
+                <div className="bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6" style={{ height: 'calc(100vh - 200px)' }}>
                   <DynamicMap
                     key={`map-${selectedRegion}-${selectedCountry}-${selectedCommunity?.name}-${Date.now()}`}
                     communities={filteredCommunities}
@@ -171,14 +157,14 @@ export default function Home() {
             </main>
           </div>
 
-          {/* Scroll indicator */}
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <a href="#about" className="text-[#F1EAE1]/70 hover:text-[#F1EAE1]">
+            <a href="#metrics" className="text-[#F1EAE1]/70 hover:text-[#F1EAE1]">
               <ChevronDown size={24} />
             </a>
           </div>
         </div>
       </section>
+
 
       {/* About Section */}
       <section id="about" className="snap-section bg-[#2A2D39] relative flex items-center justify-center">
@@ -307,4 +293,3 @@ export default function Home() {
     </div>
   )
 }
-

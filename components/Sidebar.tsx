@@ -1,6 +1,6 @@
 "use client"
 
-import { Globe } from "lucide-react"
+import { Globe, X } from "lucide-react"
 import { REGIONS } from "@/utils/regionMapping"
 import { Community } from '@/types'
 
@@ -11,6 +11,8 @@ interface SidebarProps {
   onRegionSelect: (region: string) => void
   onCountrySelect: (country: string) => void
   onCommunitySelect: (community: Community) => void
+  isMobileOpen?: boolean
+  onClose?: () => void
 }
 
 export default function Sidebar({
@@ -19,24 +21,43 @@ export default function Sidebar({
   selectedCountry,
   onRegionSelect,
   onCountrySelect,
-  onCommunitySelect
+  onCommunitySelect,
+  isMobileOpen = false,
+  onClose = () => {}
 }: SidebarProps) {
   return (
-    <div className="w-64 bg-[#2A2D39] flex flex-col">
-      <div className="h-[88px] pt-4 px-4">
+    <div
+      className={`
+        fixed top-0 left-0 h-full w-64 bg-[#2A2D39] z-50 transform transition-transform duration-300 ease-in-out
+        ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
+        lg:relative lg:translate-x-0 lg:z-auto lg:w-64 lg:flex
+      `}
+    >
+      {/* Close button in mobile */}
+      <div className="lg:hidden p-4 flex justify-end">
+        <button
+          onClick={onClose}
+          className="text-[#F1EAE1] text-xl hover:text-[#F1EAE1]/80"
+        >
+          <X />
+        </button>
+      </div>
+
+      <div className="h-[88px] pt-4 px-4 hidden lg:block">
         {/* Espacio vacío que coincide con el header */}
       </div>
+
       <div className="overflow-y-auto flex-1 pt-[49px]">
         {REGIONS.map((region) => {
           const regionData = communityGroups[region]
           const hasData = regionData && Object.keys(regionData.countries).length > 0
 
           return (
-            <div key={region} className="">
+            <div key={region}>
               <button
                 className={`w-full text-left px-4 py-2 transition-colors duration-150
                   ${selectedRegion === region ? 'bg-[#2A2D39]/50 text-[#F1EAE1]' : 'text-[#F1EAE1]/70 '}
-                  ${!hasData ? ' opacity-50 cursor-not-allowed' : 'hover:bg-[#2A2D39]/50'}`}
+                  ${!hasData ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#2A2D39]/50'}`}
                 onClick={() => onRegionSelect(region)}
                 disabled={!hasData}
               >
@@ -44,7 +65,7 @@ export default function Sidebar({
               </button>
 
               {selectedRegion === region && hasData && (
-                <div className="bg-[#2A2D39]/30 pb-1 ">
+                <div className="bg-[#2A2D39]/30 pb-1">
                   {Object.entries(regionData.countries).map(([country, communities]) => (
                     <div key={country}>
                       <button
@@ -65,9 +86,11 @@ export default function Sidebar({
                           {communities.map((community) => (
                             <button
                               key={community.name}
-                              onClick={() => onCommunitySelect(community)}
-                              className="w-full text-left pl-12 pr-4 py-1.5 text-sm text-[#F1EAE1]/70
-                                hover:bg-[#2A2D39] transition-colors duration-150"
+                              onClick={() => {
+                                onCommunitySelect(community)
+                                onClose() 
+                              }}
+                              className="w-full text-left pl-12 pr-4 py-1.5 text-sm text-[#F1EAE1]/70 hover:bg-[#2A2D39] transition-colors duration-150"
                             >
                               {community.name}
                             </button>
@@ -84,4 +107,4 @@ export default function Sidebar({
       </div>
     </div>
   )
-} 
+}
