@@ -87,14 +87,14 @@ export default function Home() {
       <section className="snap-section relative">
         <div className="h-screen flex flex-col bg-[#2A2D39]">
           <div className="border-b border-[#F1EAE1]/20">
-            <div className="px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative">
-              <div className="w-8 h-8">
+          <div className="px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative text-center sm:text-left">
+             <div className="w-8 h-8 mx-auto sm:mx-0">
                 <img src="/images/Perfil.png" alt="Web3 Citizen Logo" className="w-full h-full object-contain" />
               </div>
               <div className="sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 text-center sm:text-left">
                 <h1 className="text-2xl font-bold text-[#F1EAE1]">ETH Communities</h1>
               </div>
-              <div className="flex items-center justify-end sm:justify-start gap-4">
+              <div className="flex items-center justify-center sm:justify-end gap-4">
                 <SearchHeader 
                   searchQuery={searchQuery}
                   onSearchChange={setSearchQuery}
@@ -108,43 +108,54 @@ export default function Home() {
           <div className="lg:hidden px-4 py-2">
             <button
               onClick={() => setIsSidebarOpen(true)}
-              className="text-sm text-white bg-[#2A2D39]/50 border border-[#F1EAE1]/20 px-4 py-2 rounded-lg hover:bg-[#2A2D39]/70 transition"
+              className="text-sm text-white bg-[#2A2D39]/50 border border-[#F1EAE1]/20 px-4 py-2 rounded-lg hover:bg-[#2A2D39] transition"
             >
               Open Search Options
             </button>
           </div>
 
           <div className="flex-1 flex min-h-0 relative overflow-hidden">
-            <div className={`absolute top-[88px] left-0 h-[calc(100%-88px)] w-64 bg-[#2A2D39] z-40 transform transition-transform duration-300 ease-in-out ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:relative lg:translate-x-0 lg:z-auto lg:w-64`}>
-              <Sidebar
-                communityGroups={communityGroups}
-                selectedRegion={selectedRegion}
-                selectedCountry={selectedCountry}
-                onRegionSelect={(region) => {
-                  setSelectedRegion(region)
-                  setSelectedCountry(null)
-                  setSelectedCommunity(null)
-                  setSelectedChain(null)
-                }}
-                onCountrySelect={(country) => {
-                  setSelectedCountry(country)
-                  setSelectedCommunity(null)
-                  setSelectedChain(null)
-                }}
-                onCommunitySelect={(community) => {
-                  setSelectedCountry(community.country)
-                  setSelectedCommunity(community)
-                  setSelectedChain(null)
-                  setIsSidebarOpen(false)
-                }}
-                isMobileOpen={isSidebarOpen}
-                onClose={() => setIsSidebarOpen(false)}
-              />
-            </div>
+          {isSidebarOpen && (
+            <div className="lg:hidden fixed inset-0 top-[88px] h-[calc(100%-88px)] bg-[#2A2D39] z-40" />
+          )}
+          {/* Sidebar */}
+          <div className={`fixed top-[88px] left-0 h-[calc(100%-88px)] w-64 z-50 transform transition-transform duration-300 ease-in-out 
+            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+            lg:relative lg:top-0 lg:h-full lg:w-64 lg:translate-x-0 lg:z-auto`}>
+            <Sidebar
+              communityGroups={communityGroups}
+              selectedRegion={selectedRegion}
+              selectedCountry={selectedCountry}
+              onRegionSelect={(region) => {
+                setSelectedRegion(region)
+                setSelectedCountry(null)
+                setSelectedCommunity(null)
+                setSelectedChain(null)
+              }}
+              onCountrySelect={(country) => {
+                setSelectedCountry(country)
+                setSelectedCommunity(null)
+                setSelectedChain(null)
+              }}
+              onCommunitySelect={(community) => {
+                setSelectedCountry(community.country)
+                setSelectedCommunity(community)
+                setSelectedChain(null)
+                setIsSidebarOpen(false)
+              }}
+              isMobileOpen={isSidebarOpen}
+              onClose={() => setIsSidebarOpen(false)}
+            />
+          </div>
 
             <main className="flex-1 p-8 flex flex-col">
               <div className="container mx-auto">
-                <div className="bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6" style={{ height: 'calc(100vh - 200px)' }}>
+              <div
+                  className={`bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6 transition-all duration-300 ease-in-out ${
+                    isSidebarOpen ? 'blur-sm opacity-20 pointer-events-none' : ''
+                  }`}
+                  style={{ height: 'calc(100vh - 200px)' }}
+                >
                   <DynamicMap
                     key={`map-${selectedRegion}-${selectedCountry}-${selectedCommunity?.name}-${Date.now()}`}
                     communities={filteredCommunities}
