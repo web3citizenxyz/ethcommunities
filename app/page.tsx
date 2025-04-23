@@ -169,7 +169,7 @@ export default function Home() {
           </div>
 
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <a href="#metrics" className="text-[#F1EAE1]/70 hover:text-[#F1EAE1]">
+            <a href="#about" className="text-[#F1EAE1]/70 hover:text-[#F1EAE1]">
               <ChevronDown size={24} />
             </a>
           </div>
