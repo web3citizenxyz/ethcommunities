@@ -189,14 +189,14 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-20">
+          <div className="lg:mt-20 mt-5">
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
               {/* Feature 1 */}
               <div className="text-center">
                 <div className="flex items-center justify-center h-12 w-12 rounded-md bg-[#F1EAE1] text-[#2A2D39] mx-auto">
                   <Globe className="h-6 w-6" />
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-[#F1EAE1]">Global Network</h3>
+                <h3 className="mt-2 lg:mt-6 text-lg font-medium text-[#F1EAE1]">Global Network</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
                   Learn from communities <br />
                   across the globe.
@@ -210,7 +210,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                   </svg>
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-[#F1EAE1]">Community-Built</h3>
+                <h3 className="mt-2 lg:mt-6  text-lg font-medium text-[#F1EAE1]">Community-Built</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
                   Add your local cabal and <br />
                   grow the garden.
@@ -224,7 +224,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2L22 12L12 22L2 12L12 2z" />
                   </svg>
                 </div>
-                <h3 className="mt-6 text-lg font-medium text-[#F1EAE1]">Rollup Agnostic</h3>
+                <h3 className="mt-2 lg:mt-6  text-lg font-medium text-[#F1EAE1]">Rollup Agnostic</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
                   From L1 to L2s, we include all <br />
                   ETH communities and recurring meetups.
@@ -254,7 +254,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="mt-20">
+          <div className="mt-10 lg:mt-20">
             <div className="bg-[#2A2D39]">
               <ResponsiveContainer width="100%" height={400}>
                 <BarChart data={communityMetrics} margin={{ top: 20, right: 30, left: 0, bottom: 20 }}>
