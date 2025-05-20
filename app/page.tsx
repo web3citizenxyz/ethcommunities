@@ -182,10 +182,10 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-[#F1EAE1] sm:text-4xl">
-              What is ETH Communities?
+              Mapping the Ethereum Community
             </h2>
             <p className="mt-4 text-xl text-[#F1EAE1]/70">
-              Find and connect with Ethereum communities around the world
+              Explore meetups, projects, and builders in every region.
             </p>
           </div>
 
@@ -198,7 +198,7 @@ export default function Home() {
                 </div>
                 <h3 className="mt-2 lg:mt-6 text-lg font-medium text-[#F1EAE1]">Global Network</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  Learn from communities <br />
+                  Tap into communities <br />
                   across the globe.
                 </p>
               </div>
@@ -212,8 +212,8 @@ export default function Home() {
                 </div>
                 <h3 className="mt-2 lg:mt-6  text-lg font-medium text-[#F1EAE1]">Community-Built</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  Add your local cabal and <br />
-                  grow the garden.
+                  Submit your local crew and <br />
+                  plant a flag.
                 </p>
               </div>
 
@@ -227,7 +227,7 @@ export default function Home() {
                 <h3 className="mt-2 lg:mt-6  text-lg font-medium text-[#F1EAE1]">Rollup Agnostic</h3>
                 <p className="mt-2 text-base text-[#F1EAE1]/70">
                   From L1 to L2s, we include all <br />
-                  ETH communities and recurring meetups.
+                  all recurring meetups welcome.
                 </p>
               </div>
             </div>
@@ -247,10 +247,11 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl font-extrabold text-[#F1EAE1] sm:text-4xl">
-              {communities.length}+ Communities Worldwide
+              40+ Communities Worldwide
             </h2>
             <p className="mt-4 text-xl text-[#F1EAE1]/70">
-              Growing stronger across every continent
+              Growing stronger across every continent <br />
+              Register yours!
             </p>
           </div>
 
