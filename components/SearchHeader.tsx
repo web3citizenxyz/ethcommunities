@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { Community } from "@/types"
 import { COUNTRY_COORDINATES } from "@/utils/geocoding"
 import { useState, useCallback } from 'react'
-import SearchDropdown from './SearchDropdown'
+import SearchDropdown from '@/components/SearchDropdown'
 
 interface SearchHeaderProps {
   searchQuery: string
@@ -96,11 +96,13 @@ export default function SearchHeader({
     <div className="relative z-[9999]">
       <div className="flex items-center gap-4">
         <div ref={inputContainerRef} className="relative">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-[#F1EAE1]/50" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             type="search"
             placeholder="Search by country, community, or chain"
-            className="w-[320px] pl-9 pr-3 py-1.5 text-sm bg-[#2A2D39] border border-[#F1EAE1]/20 rounded-md text-[#F1EAE1] placeholder-[#F1EAE1]/50 focus:outline-none focus:ring-1 focus:ring-[#F1EAE1]/50 focus:border-[#F1EAE1]/50"
+            className="w-[320px] pl-9 pr-3 py-2 text-sm bg-white border border-gray-200 
+              rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none 
+              focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={localSearchQuery}
             onChange={(e) => {
               setLocalSearchQuery(e.target.value)
@@ -109,19 +111,50 @@ export default function SearchHeader({
             onFocus={() => setShowResults(true)}
           />
           {showResults && results.length > 0 && (
-            <SearchDropdown
-              results={results}
-              onSelect={handleResultSelect}
-              onClose={() => setShowResults(false)}
-              inputRef={inputContainerRef}
-            />
+            <div 
+              style={{
+                position: 'fixed',
+                top: inputContainerRef.current ? 
+                  inputContainerRef.current.getBoundingClientRect().bottom + 4 : 0,
+                left: inputContainerRef.current ? 
+                  inputContainerRef.current.getBoundingClientRect().left : 0,
+                width: inputContainerRef.current ? 
+                  inputContainerRef.current.offsetWidth : 320,
+                zIndex: 9999,
+              }}
+              className="bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden"
+            >
+              <div className="max-h-[300px] overflow-y-auto">
+                {results.map((result, index) => (
+                  <button
+                    key={index}
+                    className="w-full px-4 py-3 text-left text-sm hover:bg-gray-50 
+                      transition-colors duration-150 flex items-center justify-between
+                      border-b border-gray-100 last:border-0"
+                    onClick={() => handleResultSelect(result)}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-gray-900 font-medium">
+                        {result.type === 'community' 
+                          ? (result.value as Community).name
+                          : result.value as string}
+                      </span>
+                    </div>
+                    <span className="text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+                      {result.type === 'community' ? 'Community' : 'Country'}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
           )}
         </div>
         <Button 
           size="sm" 
           variant="outline"
-          className="text-sm font-normal text-[#F1EAE1] border-[#F1EAE1]/20 hover:bg-[#2A2D39]/50 whitespace-nowrap"
-          onClick={() => router.push('/add-community')}
+          className="text-sm font-normal text-[#F1EAE1] border-[#F1EAE1]/20 
+            hover:bg-[#2A2D39]/50 whitespace-nowrap"
+          onClick={() => window.open('https://github.com/eugeniatel/ethcommunity', '_blank')}
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Community

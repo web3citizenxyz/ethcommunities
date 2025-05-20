@@ -77,12 +77,6 @@
     "country": "Brazil"
   },
   {
-    "name": "ETH Toronto",
-    "website": "https://www.ethtoronto.ca/",
-    "country": "Canada",
-    "city": "Toronto"
-  },
-  {
     "name": "ETH Salvador",
     "website": "https://ethsalvador.org/",
     "country": "El Salvador",
@@ -117,60 +111,25 @@
     "city": "Montevideo"
   },
   {
-    "name": "Boston Blockchain Week",
-    "website": "https://bostonblockchainweek.com/",
-    "country": "USA"
-  },
-  {
-    "name": "ETH Denver",
-    "website": "https://www.ethdenver.com/",
-    "country": "USA",
-    "city": "Denver"
-  },
-  {
-    "name": "ETH Ensenada",
-    "twitter": "https://x.com/ETH_Ensenada",
-    "country": "USA",
-    "city": "Ensenada"
-  },
-  {
-    "name": "ETH Miami",
-    "website": "https://ethmiami.net/",
-    "country": "USA",
-    "city": "Miami"
-  },
-  {
-    "name": "ETH San Francisco",
-    "website": "https://www.ethereumsf.org/",
-    "country": "USA",
-    "city": "San Francisco"
-  },
-  {
-    "name": "NFT NYC",
-    "website": "https://www.nft.nyc/",
-    "country": "USA",
-    "city": "New York"
-  },
-  {
-    "name": "LATAM",
+    "name": "LATAM - CriptoCuriosas",
     "twitter": "https://x.com/CriptoCuriosas",
-    "country": "Latin America"
+    "country": "Argentina",
+    "city": "Buenos Aires"
   },
   {
-    "name": "LATAM",
-    "twitter": "https://x.com/herdaolatam",
-    "country": "Latin America"
+    "name": "LATAM - CriptoCuriosas",
+    "twitter": "https://x.com/CriptoCuriosas",
+    "country": "Venezuela"
   },
   {
-    "name": "LATAM",
+    "name": "LATAM - CriptoCuriosas",
+    "twitter": "https://x.com/CriptoCuriosas",
+    "country": "Peru"
+  },
+  {
+    "name": "LATAM - Espacio Cripto",
     "twitter": "https://x.com/EspacioCripto",
-    "country": "Latin America"
-  },
-  {
-    "name": "ETH Shanghai",
-    "website": "https://ethshanghai.org/",
-    "country": "China",
-    "city": "Shanghai"
+    "country": "Mexico"
   },
   {
     "name": "ETH Tokio",
@@ -190,96 +149,118 @@
     "city": "Sofia"
   },
   {
+    "name": "ETH Sofia",
+    "website": "https://www.meetup.com/sofia-crypto-meetup/",
+    "country": "Bulgaria",
+    "city": "Sofia"
+  },
+  {
+    "name": "ETH Bratislava",
+    "website": "https://ethbratislava.com/",
+    "country": "Slovakia",
+    "city": "Bratislava"
+  },
+  {
     "name": "ETH Lisbon",
     "website": "https://ethlisbon.org/",
-    "country": "Czech Republic",
-    "city": "Prague"
+    "country": "Portugal",
+    "city": "Lisbon"
   },
   {
     "name": "Oxford Blockchain Society",
     "website": "https://www.oxfordblockchain.xyz/",
-    "country": "England"
-  },
-  {
-    "name": "ETH Tallin",
-    "website": "https://x.com/eth_tallinn",
-    "country": "Estonia"
+    "country": "England",
+    "city": "Oxford"
   },
   {
     "name": "ETH Dublin",
     "website": "https://www.ethdublin.io/",
-    "country": "Ireland"
+    "country": "Ireland",
+    "city": "Dublin"
   },
   {
     "name": "ETH Milan",
     "website": "https://www.ethmilan.xyz/",
-    "country": "Italy"
+    "country": "Italy",
+    "city": "Milan"
   },
   {
     "name": "ETH Naples",
-    "website": "https://linktr.ee/napuleth",
-    "country": "Italy"
+    "website": "https://www.napuleth.org/",
+    "country": "Italy",
+    "city": "Naples"
   },
   {
     "name": "ETHRome",
     "website": "https://www.ethrome.org/",
-    "country": "Italy"
+    "country": "Italy",
+    "city": "Rome"
   },
   {
     "name": "ETH Venice",
     "website": "https://ethvenice.com/",
-    "country": "Italy"
+    "country": "Italy",
+    "city": "Venice"
   },
   {
-    "name": "ETHDam",
+    "name": "ETH Dam",
     "website": "https://www.ethdam.com/",
-    "country": "Netherlands"
+    "country": "Netherlands",
+    "city": "Amsterdam"
   },
   {
     "name": "ETH Warsaw",
     "website": "https://www.ethwarsaw.dev/",
-    "country": "Poland"
+    "country": "Poland",
+    "city": "Warsaw"
   },
   {
     "name": "ETH Bucharest",
     "website": "https://linktr.ee/ethbucharest",
-    "country": "Romania"
+    "country": "Romania",
+    "city": "Bucharest"
   },
   {
     "name": "ETH Cluj",
     "website": "https://www.ethcluj.org/",
-    "country": "Romania"
-  },
-  {
-    "name": "NFT Bucharest",
-    "website": "https://nftbucharest.xyz/",
-    "country": "Romania"
+    "country": "Romania",
+    "city": "Cluj"
   },
   {
     "name": "ETH Belgrade",
     "website": "https://ethbelgrade.rs/",
-    "country": "Serbia"
-  },
-  {
-    "name": "Belgrade Blockchain Week",
-    "website": "https://belgradeblockchainweek.com/",
-    "country": "Serbia"
+    "country": "Serbia",
+    "city": "Belgrade"
   },
   {
     "name": "ETH Istanbul",
     "website": "https://x.com/ETHIstanbul",
-    "country": "Turkey"
+    "country": "Turkey",
+    "city": "Istanbul"
   },
   {
     "name": "ETH Riyadh",
     "website": "https://ethriyadh.com/",
     "contact": "ethriyadh2024@gmail.com",
-    "country": "Saudi Arabia"
+    "country": "Saudi Arabia",
+    "city": "Riyadh"
   },
   {
     "name": "ETHDubai",
     "website": "https://www.ethdubaiconf.org/",
     "country": "UAE"
+  },
+  {
+    "name": "SEED Org",
+    "website": "https://seedorg.super.site/home",
+    "country": "Argentina",
+    "city": "Buenos Aires"
+  },
+  {
+    "name": "Mujeres En Crypto",
+    "website": "https://mujeresencrypto.org/",
+    "country": "Argentina",
+    "city": "Buenos Aires"
   }
 ]
 

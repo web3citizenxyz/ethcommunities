@@ -1,3 +1,5 @@
+import { Community } from '@/types'
+
 export const COUNTRY_COORDINATES: Record<string, [number, number]> = {
   // North America
   'USA': [39.8283, -98.5795],
@@ -73,3 +75,15 @@ export async function geocodeLocation(city: string, country: string): Promise<{ 
     return null;
   }
 } 
+
+export async function getCommunityCoordinates(community: Community) {
+  const city = community.city ?? ''
+  const country = community.country
+  const coords = await geocodeLocation(city, country)
+
+  if (!coords) {
+    throw new Error(`No coordinates found for ${community.name}`)
+  }
+
+  return coords
+}
