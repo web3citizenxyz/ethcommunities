@@ -1,10 +1,12 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, Montserrat } from "next/font/google"
 import "../app/globals.css"
 import 'leaflet/dist/leaflet.css'
 
-const inter = Inter({ subsets: ["latin"] })
+
+const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '700'] })
+const inter = Inter({ subsets: ['latin'], weight: ['400', '700'] })
 
 export const metadata: Metadata = {
   title: "Ethereum Communities",
@@ -34,7 +36,7 @@ export default function RootLayout({
           crossOrigin=""
         />
       </head>
-      <body className={inter.className}>
+      <body className={montserrat.className}>
         {children}
         <script src="/js/leaflet/leaflet.markercluster-src.js" defer></script>
         <script src="/js/app.js" defer></script>

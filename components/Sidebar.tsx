@@ -1,6 +1,6 @@
 "use client"
 
-import { X } from "lucide-react"
+import { X, Menu } from "lucide-react"
 import { REGIONS } from "@/utils/regionMapping"
 import { Community } from '@/types'
 

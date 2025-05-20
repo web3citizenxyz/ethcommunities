@@ -94,13 +94,13 @@ export default function SearchHeader({
 
   return (
     <div className="relative z-[9999]">
-      <div className="flex items-center gap-4">
-        <div ref={inputContainerRef} className="relative">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-4">
+        <div ref={inputContainerRef} className="relative w-full sm:w-[320px]">
           <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             type="search"
-            placeholder="Search by country, community, or chain"
-            className="w-[320px] pl-9 pr-3 py-2 text-sm bg-white border border-gray-200 
+            placeholder="Search countries, communities"
+            className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-gray-200 
               rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none 
               focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={localSearchQuery}
@@ -152,7 +152,7 @@ export default function SearchHeader({
         <Button 
           size="sm" 
           variant="outline"
-          className="text-sm font-normal text-[#F1EAE1] border-[#F1EAE1]/20 
+          className="w-full sm:w-auto text-sm font-normal text-[#F1EAE1] border-[#F1EAE1]/20 
             hover:bg-[#2A2D39]/50 whitespace-nowrap"
           onClick={() => window.open('https://github.com/eugeniatel/ethcommunity', '_blank')}
         >

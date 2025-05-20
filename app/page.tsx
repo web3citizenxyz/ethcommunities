@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import dynamic from 'next/dynamic'
-import { Globe, Plus, ChevronDown } from "lucide-react"
+import { Globe, Plus, ChevronDown, Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Sidebar from "@/components/Sidebar"
 import { REGION_MAPPING } from "@/utils/regionMapping"
@@ -87,31 +87,36 @@ export default function Home() {
       <section className="snap-section relative">
         <div className="h-screen flex flex-col bg-[#2A2D39]">
           <div className="border-b border-[#F1EAE1]/20">
-          <div className="px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative text-center sm:text-left">
-             <div className="w-8 h-8 mx-auto sm:mx-0">
+            <div className="px-4 sm:px-6 lg:px-8 py-4 pt-[env(safe-area-inset-top)] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative text-center sm:text-left">
+              <div className="w-8 h-8 mx-auto sm:mx-0">
                 <img src="/images/Perfil.png" alt="Web3 Citizen Logo" className="w-full h-full object-contain" />
               </div>
               <div className="sm:absolute sm:left-1/2 sm:transform sm:-translate-x-1/2 text-center sm:text-left">
                 <h1 className="text-2xl font-bold text-[#F1EAE1]">ETH Communities</h1>
               </div>
-              <div className="flex items-center justify-center sm:justify-end gap-4">
-                <SearchHeader 
-                  searchQuery={searchQuery}
-                  onSearchChange={setSearchQuery}
-                  communities={communities}
-                  onSelectResult={handleSearchResult}
-                />
+              <div className="flex flex-col md:flex-row gap-2 px-4 md:px-8 mt-4">
+                <div className="flex items-center gap-2 w-full md:w-auto">
+                  {/* Hamburger menu, mobile only */}
+                  <button
+                    onClick={() => setIsSidebarOpen(true)}
+                    className="block md:hidden text-[#F1EAE1] p-2 rounded-lg border border-[#F1EAE1]/20 bg-[#2A2D39]/50 hover:bg-[#2A2D39] transition hamburger"
+                    aria-label="Open Search Options"
+                    style={{ position: 'relative', top: '0.25rem' }}
+                  >
+                    <Menu className="h-6 w-6" />
+                  </button>
+                  {/* Search bar */}
+                  <div className="flex-1">
+                    <SearchHeader 
+                      searchQuery={searchQuery}
+                      onSearchChange={setSearchQuery}
+                      communities={communities}
+                      onSelectResult={handleSearchResult}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-          <div className="lg:hidden px-4 py-2">
-            <button
-              onClick={() => setIsSidebarOpen(true)}
-              className="text-sm text-white bg-[#2A2D39]/50 border border-[#F1EAE1]/20 px-4 py-2 rounded-lg hover:bg-[#2A2D39] transition"
-            >
-              Open Search Options
-            </button>
           </div>
 
           <div className="flex-1 flex min-h-0 relative overflow-hidden">
@@ -151,10 +156,12 @@ export default function Home() {
             <main className="flex-1 p-8 flex flex-col">
               <div className="container mx-auto">
               <div
-                  className={`bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-6 transition-all duration-300 ease-in-out ${
-                    isSidebarOpen ? 'blur-sm opacity-20 pointer-events-none' : ''
-                  }`}
-                  style={{ height: 'calc(100vh - 200px)' }}
+                  className={`bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-4 sm:p-6 transition-all duration-300 ease-in-out`}
+                  style={{
+                    height: window.innerWidth < 640 ? '60vw' : 'calc(100vh - 200px)',
+                    maxHeight: window.innerWidth < 640 ? '350px' : undefined,
+                    minHeight: window.innerWidth < 640 ? '200px' : undefined,
+                  }}
                 >
                   <DynamicMap
                     key={`map-${selectedRegion}-${selectedCountry}-${selectedCommunity?.name}-${Date.now()}`}
@@ -189,47 +196,16 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="lg:mt-20 mt-5">
-            <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
-              {/* Feature 1 */}
-              <div className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-[#F1EAE1] text-[#2A2D39] mx-auto">
-                  <Globe className="h-6 w-6" />
-                </div>
-                <h3 className="mt-2 lg:mt-6 text-lg font-medium text-[#F1EAE1]">Global Network</h3>
-                <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  Tap into communities <br />
-                  across the globe.
-                </p>
-              </div>
-
-              {/* Feature 2 */}
-              <div className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-[#F1EAE1] text-[#2A2D39] mx-auto">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                </div>
-                <h3 className="mt-2 lg:mt-6  text-lg font-medium text-[#F1EAE1]">Community-Built</h3>
-                <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  Submit your local crew and <br />
-                  plant a flag.
-                </p>
-              </div>
-
-              {/* Feature 3 */}
-              <div className="text-center">
-                <div className="flex items-center justify-center h-12 w-12 rounded-md bg-[#F1EAE1] text-[#2A2D39] mx-auto">
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2L22 12L12 22L2 12L12 2z" />
-                  </svg>
-                </div>
-                <h3 className="mt-2 lg:mt-6  text-lg font-medium text-[#F1EAE1]">Rollup Agnostic</h3>
-                <p className="mt-2 text-base text-[#F1EAE1]/70">
-                  From L1 to L2s, we include all <br />
-                  all recurring meetups welcome.
-                </p>
-              </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mx-auto max-w-2xl mt-8">
+            <div className="text-center max-w-xs mx-auto bg-[#232533] rounded-xl shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
+              <img src="/icons/EllipsesIcon.svg" alt="Global Network Icon" className="w-12 h-12 mx-auto mb-2" />
+              <h3 className="text-lg font-semibold text-[#F1EAE1]">Global Network</h3>
+              <p className="text-sm text-zinc-400 mt-1">Tap into communities across the globe.</p>
+            </div>
+            <div className="text-center max-w-xs mx-auto bg-[#232533] rounded-xl shadow-md p-6 transition-transform hover:scale-105 hover:shadow-lg">
+              <img src="/icons/CirclesIcon.svg" alt="Community Built Icon" className="w-12 h-12 mx-auto mb-2" />
+              <h3 className="text-lg font-semibold text-[#F1EAE1]">Community-Built</h3>
+              <p className="text-sm text-zinc-400 mt-1">Submit your local crew and plant a flag.</p>
             </div>
           </div>
         </div>
