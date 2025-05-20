@@ -99,9 +99,9 @@ export default function SearchHeader({
           <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
           <input
             type="search"
-            placeholder="Search countries, communities"
-            className="w-full pl-9 pr-3 py-2 text-sm bg-white border border-gray-200 
-              rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none 
+            placeholder="Search country or community"
+            className="w-full pl-9 pr-3 py-2 text-base bg-white border border-gray-200 
+              rounded-lg text-gray-900 placeholder-gray-500 placeholder:text-xs focus:outline-none 
               focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             value={localSearchQuery}
             onChange={(e) => {

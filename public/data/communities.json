@@ -2,7 +2,8 @@
   {
     "name": "ETHiopia",
     "website": "https://eth-iopia.xyz/",
-    "country": "Ethiopia"
+    "country": "Ethiopia",
+    "city": "Addis Ababa"
   },
   {
     "name": "Blockfuse Labs",
@@ -74,7 +75,8 @@
   {
     "name": "Modular Crypto",
     "website": "https://www.modularcrypto.xyz/",
-    "country": "Brazil"
+    "country": "Brazil",
+    "city": "Sao Paulo"
   },
   {
     "name": "ETH Salvador",
@@ -85,7 +87,8 @@
   {
     "name": "Ethereum Honduras",
     "website": "https://linktr.ee/ethereumhn",
-    "country": "Honduras"
+    "country": "Honduras",
+    "city": "Tegucigalpa"
   },
   {
     "name": "Ethereum Mexico",
@@ -119,17 +122,20 @@
   {
     "name": "LATAM - CriptoCuriosas",
     "twitter": "https://x.com/CriptoCuriosas",
-    "country": "Venezuela"
+    "country": "Venezuela",
+    "city": "Caracas"
   },
   {
     "name": "LATAM - CriptoCuriosas",
     "twitter": "https://x.com/CriptoCuriosas",
-    "country": "Peru"
+    "country": "Peru",
+    "city": "Lima"
   },
   {
     "name": "LATAM - Espacio Cripto",
     "twitter": "https://x.com/EspacioCripto",
-    "country": "Mexico"
+    "country": "Mexico",
+    "city": "Mexico City"
   },
   {
     "name": "ETH Tokio",
@@ -140,7 +146,8 @@
   {
     "name": "ETHTaipei",
     "website": "https://ethtaipei.org/",
-    "country": "Taiwan"
+    "country": "Taiwan",
+    "city": "Taipei"
   },
   {
     "name": "ETH Sofia",
@@ -248,7 +255,8 @@
   {
     "name": "ETHDubai",
     "website": "https://www.ethdubaiconf.org/",
-    "country": "UAE"
+    "country": "UAE",
+    "city": "Dubai"
   },
   {
     "name": "SEED Org",

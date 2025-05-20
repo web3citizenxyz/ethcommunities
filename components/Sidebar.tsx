@@ -26,12 +26,16 @@ export default function Sidebar({
   onClose = () => {}
 }: SidebarProps) {
   return (
-    <div className={`
-      fixed top-[88px] left-0 h-[calc(100%-88px)] w-full max-w-[256px] z-50 transform transition-transform duration-300 ease-in-out
-      ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
-      lg:relative lg:top-0 lg:h-full lg:w-64 lg:max-w-none lg:translate-x-0 lg:z-auto
-    `}>
-      <div className={`flex flex-col h-full bg-[#2A2D39] lg:bg-transparent`}>
+    <div
+      className={`
+        fixed top-[88px] left-0 h-[calc(100%-88px)] w-full max-w-[256px] z-50 transform transition-transform duration-300 ease-in-out
+        bg-[#2A2D39]
+        ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
+        lg:relative lg:top-0 lg:h-full lg:w-64 lg:max-w-none lg:translate-x-0 lg:z-auto
+        lg:bg-transparent
+      `}
+    >
+      <div className="flex flex-col h-full">
         <div className="lg:hidden p-4 flex justify-end">
           <button
             onClick={onClose}

@@ -120,38 +120,39 @@ export default function Home() {
           </div>
 
           <div className="flex-1 flex min-h-0 relative overflow-hidden">
-          {isSidebarOpen && (
-            <div className="lg:hidden fixed inset-0 top-[88px] h-[calc(100%-88px)] bg-[#2A2D39] z-40" />
-          )}
-          {/* Sidebar */}
-          <div className={`fixed top-[88px] left-0 h-[calc(100%-88px)] w-64 z-50 transform transition-transform duration-300 ease-in-out 
-            ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
-            lg:relative lg:top-0 lg:h-full lg:w-64 lg:translate-x-0 lg:z-auto`}>
-            <Sidebar
-              communityGroups={communityGroups}
-              selectedRegion={selectedRegion}
-              selectedCountry={selectedCountry}
-              onRegionSelect={(region) => {
-                setSelectedRegion(region)
-                setSelectedCountry(null)
-                setSelectedCommunity(null)
-                setSelectedChain(null)
-              }}
-              onCountrySelect={(country) => {
-                setSelectedCountry(country)
-                setSelectedCommunity(null)
-                setSelectedChain(null)
-              }}
-              onCommunitySelect={(community) => {
-                setSelectedCountry(community.country)
-                setSelectedCommunity(community)
-                setSelectedChain(null)
-                setIsSidebarOpen(false)
-              }}
-              isMobileOpen={isSidebarOpen}
-              onClose={() => setIsSidebarOpen(false)}
-            />
-          </div>
+            {/* Overlay: must come before Sidebar for proper stacking */}
+            {isSidebarOpen && (
+              <div className="lg:hidden fixed inset-0 top-[88px] h-[calc(100%-88px)] bg-[#2A2D39]/95 z-40" />
+            )}
+            {/* Sidebar */}
+            <div className={`fixed top-[88px] left-0 h-[calc(100%-88px)] w-64 z-50 transform transition-transform duration-300 ease-in-out 
+              ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} 
+              lg:relative lg:top-0 lg:h-full lg:w-64 lg:translate-x-0 lg:z-auto`}>
+              <Sidebar
+                communityGroups={communityGroups}
+                selectedRegion={selectedRegion}
+                selectedCountry={selectedCountry}
+                onRegionSelect={(region) => {
+                  setSelectedRegion(region)
+                  setSelectedCountry(null)
+                  setSelectedCommunity(null)
+                  setSelectedChain(null)
+                }}
+                onCountrySelect={(country) => {
+                  setSelectedCountry(country)
+                  setSelectedCommunity(null)
+                  setSelectedChain(null)
+                }}
+                onCommunitySelect={(community) => {
+                  setSelectedCountry(community.country)
+                  setSelectedCommunity(community)
+                  setSelectedChain(null)
+                  setIsSidebarOpen(false)
+                }}
+                isMobileOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+              />
+            </div>
 
             <main className="flex-1 p-8 flex flex-col">
               <div className="container mx-auto">
