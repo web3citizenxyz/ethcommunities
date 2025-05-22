@@ -159,7 +159,7 @@ export default function Home() {
               <div
                   className={`bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-4 sm:p-6 transition-all duration-300 ease-in-out`}
                   style={{
-                    height: window.innerWidth < 640 ? '60vw' : 'calc(100vh - 200px)',
+                    height: window.innerWidth < 640 ? '150vw' : 'calc(100vh - 200px)',
                     maxHeight: window.innerWidth < 640 ? '350px' : undefined,
                     minHeight: window.innerWidth < 640 ? '200px' : undefined,
                   }}
