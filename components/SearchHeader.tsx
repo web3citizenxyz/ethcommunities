@@ -154,7 +154,7 @@ export default function SearchHeader({
           variant="outline"
           className="w-full sm:w-auto text-sm font-normal text-[#F1EAE1] border-[#F1EAE1]/20 
             hover:bg-[#2A2D39]/50 whitespace-nowrap"
-          onClick={() => window.open('https://github.com/eugeniatel/ethcommunity', '_blank')}
+          onClick={() => window.open('https://github.com/web3citizenxyz/ethcommunities', '_blank')}
         >
           <Plus className="h-4 w-4 mr-2" />
           Add Community

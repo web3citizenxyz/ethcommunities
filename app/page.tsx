@@ -28,7 +28,10 @@ export default function Home() {
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null)
   const [selectedChain, setSelectedChain] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState("")
-
+  const [mapHeight, setMapHeight] = useState('calc(100vh - 200px)'); // Default height
+  const [currentMaxHeight, setCurrentMaxHeight] = useState<string | undefined>(undefined);
+  const [currentMinHeight, setCurrentMinHeight] = useState<string | undefined>(undefined);
+  
   useEffect(() => {
     const loadCommunities = async () => {
       try {
@@ -42,6 +45,20 @@ export default function Home() {
     loadCommunities()
   }, [])
 
+  useEffect(() => {
+    const calculateDimensions = () => {
+      if (typeof window !== 'undefined') {
+        setMapHeight(window.innerWidth < 640 ? '100vw' : 'calc(100vh - 200px)'); // Changed 150vw to 100vw
+        setCurrentMaxHeight(window.innerWidth < 640 ? '350px' : undefined);
+        setCurrentMinHeight(window.innerWidth < 640 ? '200px' : undefined);
+      }
+    };
+    calculateDimensions();
+    // Optional: Add event listener for resize
+    // window.addEventListener('resize', calculateDimensions);
+    // return () => window.removeEventListener('resize', calculateDimensions);
+  }, []);
+
   const filteredCommunities = selectedChain
     ? communities.filter(community => community.chain === selectedChain)
     : communities
@@ -53,6 +70,11 @@ export default function Home() {
     acc[region].countries[community.country].push(community)
     return acc
   }, {} as Record<string, { countries: Record<string, Community[]> }>)
+
+  // Add this console.log for debugging
+  if (typeof window !== 'undefined') {
+    console.log('Rendering Home - mapHeight:', mapHeight, 'maxHeight:', currentMaxHeight, 'minHeight:', currentMinHeight);
+  }
 
   const handleSearchResult = (result: { type: 'country' | 'community' | 'chain', value: string | Community }) => {
     if (result.type === 'country') {
@@ -159,9 +181,9 @@ export default function Home() {
               <div
                   className={`bg-[#2A2D39] rounded-xl shadow-lg border border-[#F1EAE1]/20 p-4 sm:p-6 transition-all duration-300 ease-in-out`}
                   style={{
-                    height: window.innerWidth < 640 ? '150vw' : 'calc(100vh - 200px)',
-                    maxHeight: window.innerWidth < 640 ? '350px' : undefined,
-                    minHeight: window.innerWidth < 640 ? '200px' : undefined,
+                    height: mapHeight,
+                    maxHeight: currentMaxHeight,
+                    minHeight: currentMinHeight,
                   }}
                 >
                   <DynamicMap
