@@ -119,6 +119,7 @@ export default function Home() {
               <div className="flex flex-col md:flex-row gap-2 px-4 md:px-8 mt-4">
                 <div className="flex items-center gap-2 w-full md:w-auto">
                   {/* Hamburger menu, mobile only */}
+                  {/*
                   <button
                     onClick={() => setIsSidebarOpen(true)}
                     className="block md:hidden text-[#F1EAE1] p-2 rounded-lg border border-[#F1EAE1]/20 bg-[#2A2D39]/50 hover:bg-[#2A2D39] transition hamburger"
@@ -127,6 +128,7 @@ export default function Home() {
                   >
                     <Menu className="h-6 w-6" />
                   </button>
+                  */}
                   {/* Search bar */}
                   <div className="flex-1">
                     <SearchHeader 
