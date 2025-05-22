@@ -14,18 +14,15 @@ To add your community, please follow these steps:
     cd ETHCommunities
     ```
 4.  **Open `communities.json`:** Locate and open the `communities.json` file in your preferred code editor.
-5.  **Add your community:** Add a new JSON object to the existing array. Each community object should follow this structure:
+5.  **Add your community:** Add a new JSON object to the existing array. Each community object should include name, country where it is based and city. Additionally you can include your website or twitter handle.
+
+Follow this structure:
 
     ```json
     {
       "name": "Your Community Name",
-      "description": "A brief description of your community.",
       "url": "https://yourcommunityurl.com",
-      "twitter": "https://twitter.com/yourcommunityhandle (Optional)",
-      "discord": "https://discord.gg/yourcommunityinvite (Optional)",
-      "telegram": "https://t.me/yourcommunitygroup (Optional)",
-      "github": "https://github.com/yourcommunityorg (Optional)",
-      "logo": "link_to_your_logo.png (Optional, ensure it's a direct link to an image file)"
+      "website": "https://website.com/ (Optional; or include twitter, github or telegram link)",
     }
     ```
     **Important:**
