@@ -292,7 +292,7 @@ export default function Home() {
             <p>
               maintained with ❤️ by{' '}
               <a 
-                href="https://github.com/yourusername/ethcommunity" 
+                href="https://www.web3citizen.xyz" 
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-[#F1EAE1] hover:text-[#F1EAE1]/80"
